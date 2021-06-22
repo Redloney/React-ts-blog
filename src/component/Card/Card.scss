@@ -1,0 +1,84 @@
+.card:first-of-type {
+  flex-basis: 50%;
+  flex-grow: 1;
+  max-width: unset;
+}
+
+.card {
+  flex-basis: 33.3%;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .link {
+    overflow: hidden;
+    border: 2px solid #333;
+    display: block;
+    border-radius: 5px;
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    .picture {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all .5s ease;
+
+      &:hover {
+        transform: scale(1.1);
+        transition: all .5s ease;
+      }
+    }
+  }
+
+  .discription {
+    margin-top: 10px;
+
+    .tag {
+      border-left: 4px solid #333;
+      padding-left: 15px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .title {
+      font-size: 19px;
+      font-weight: 500;
+      padding-left: 15px;
+    }
+
+    .extra {
+      font-size: 12px;
+      padding-left: 15px;
+      color: #5d738d;
+      text-transform: upperccase;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+
+@media screen and (min-width:1050px) and (max-width:1200px) {
+  .card:first-of-type {
+    flex-basis: 100%;
+  }
+
+  .card {
+    flex-basis: 50%;
+  }
+}
+
+@media screen and (min-width:640px) and (max-width:1050px) {
+  .card {
+    flex-basis: 100%;
+  }
+}
+
+//  设备屏幕宽度小于 640px
+@media screen and (max-width:640px) {
+  .card {
+    flex-basis: 100%;
+  }
+}
