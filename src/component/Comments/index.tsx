@@ -2,12 +2,19 @@ import React, { PureComponent } from 'react'
 import './Comments.scss'
 
 import { List, Button, Skeleton } from 'antd'
+import { GetComments } from '../../api/comm'
 
 interface Props {}
 
 interface State {}
 
 export default class Comments extends PureComponent<Props, State> {
+  componentDidMount() {
+    GetComments().then((ret) => {
+      console.log(ret)
+    })
+  }
+
   render() {
     // 加载更多
     const loadMore = (

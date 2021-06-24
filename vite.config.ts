@@ -19,9 +19,14 @@ export default defineConfig({
     proxy: {
       '^/api': {
         target: 'http://localhost:8082',
-        changeOrigin: true, //开启代理,
+        changeOrigin: true,
         // rewrite: path => path.replace(/^\/api/, '')
-      }
+      },
+      '^/map': {
+        target: 'https://apis.map.qq.com/ws/location/v1/ip',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/map/, '')
+      },
     }
   },
   css: {

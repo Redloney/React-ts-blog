@@ -1,14 +1,18 @@
 import React, { PureComponent, RefObject } from 'react'
 
-import { Modal, Form, Radio, Input, Col, Row } from 'antd'
+import { Modal, Form, Radio, Input, Col, Row, message } from 'antd'
 
 import { ModalProps } from 'antd/lib/modal'
 import { FormInstance } from 'antd/lib/form'
 
 import './Form.scss'
 
+import { ValidateUserExist, UserLogin, GetUserAddress } from '../../../api/user'
+import { UserInfo } from '../../../types'
+
 interface Props {
   setVisible: Function
+  setUserInfo: Function
   visible: boolean | undefined
 }
 
@@ -17,39 +21,52 @@ interface State {
   gender: string
   email: string
   weburl: string
+  timer: number
+  nameExist: boolean
+  emailExist: boolean
 }
+
 export default class index extends PureComponent<Props, State> {
   state: State = {
     nickname: '',
     gender: '',
     email: '',
     weburl: '',
+    timer: 0,
+    nameExist: false,
+    emailExist: false,
   }
 
   FormRef: RefObject<FormInstance> = React.createRef()
 
-  componentDidMount() {
-    // console.log(this.FormRef);
-  }
-
   modalSubmit = () => {
-    // this.FormRef.current?.validateFields(['nickname'])
     this.FormRef.current?.submit()
-    // this.props.setVisible(false)
   }
 
   modalCancel = () => {
     this.props.setVisible(false)
+    this.FormRef.current?.resetFields()
   }
 
   // 请求登录接口
-  submit = (values: any) => {
-    console.log(values)
+  submit = async (userinfo: UserInfo) => {
+    // 节流
+    let address = await GetUserAddress()
+    let ret: any = await UserLogin({ ...userinfo, address })
+    console.log(ret)
+    if (ret.data && !ret.msg) {
+      const user = ret.data
+      message.success('欢迎你! ' + user.nickname, 3)
+      this.props.setUserInfo(user)
+      this.modalCancel()
+    } else {
+      message.warn('登录失败! ' + ret.msg, 3)
+    }
   }
 
   render() {
     const { visible } = this.props
-    const { } = this.state
+    const {} = this.state
     const { modalSubmit, modalCancel, submit } = this
 
     // Modal 配置参数
@@ -76,6 +93,7 @@ export default class index extends PureComponent<Props, State> {
               <Form.Item>昵称(必填)</Form.Item>
               <Form.Item
                 name="nickname"
+                validateTrigger="onBlur"
                 rules={[
                   {
                     type: 'string',
@@ -86,6 +104,19 @@ export default class index extends PureComponent<Props, State> {
                     min: 1,
                     max: 12,
                     message: '请输入 1~12 位昵称！',
+                  },
+                  {
+                    validator: async (_rule, value: string, _callback) => {
+                      if (this.state.nameExist) return
+                      if (!value) return
+                      let isExist: boolean = (await ValidateUserExist({
+                        nickname: value,
+                      })) as boolean
+                      this.setState({
+                        nameExist: isExist,
+                      })
+                      isExist ? message.info('昵称已存在') : null
+                    },
                   },
                 ]}
               >
@@ -137,13 +168,31 @@ export default class index extends PureComponent<Props, State> {
               xxl={{ offset: 0, span: 10 }}
             >
               <Form.Item>
-                <Form.Item>邮箱 :</Form.Item>
+                <Form.Item>邮箱(必填) :</Form.Item>
                 <Form.Item
                   name="email"
+                  validateTrigger="onBlur"
                   rules={[
+                    {
+                      required: true,
+                      message: '请填写你的邮箱！',
+                    },
                     {
                       type: 'email',
                       message: '请输入正确的邮箱格式!',
+                    },
+                    {
+                      validator: async (_rule, value: string, _callback) => {
+                        if (this.state.emailExist) return
+                        if (!value) return
+                        let isExist: boolean = (await ValidateUserExist({
+                          email: value,
+                        })) as boolean
+                        this.setState({
+                          emailExist: isExist,
+                        })
+                        isExist ? message.info('邮箱已存在') : null
+                      },
                     },
                   ]}
                 >

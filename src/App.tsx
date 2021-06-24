@@ -6,18 +6,16 @@ import './assets/styles/global.scss'
 
 import Header from './component/Header'
 import Footer from './component/Footer'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import View from './views/View';
+import { BrowserRouter as Router } from 'react-router-dom'
+import View from './views/View'
 
 import Aos from 'aos'
 import 'aos/dist/aos.css'
-const App = () => {
 
+const App = () => {
   useEffect(() => {
     Aos.init()
-    console.log('APP 初始化成功');
   }, [])
-
 
   return (
     <div className="App">

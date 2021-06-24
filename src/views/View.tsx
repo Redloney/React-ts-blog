@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React from 'react'
+import { Route, Switch } from 'react-router-dom'
 
 import routers from '../routers'
 import './view.scss'
@@ -20,7 +20,7 @@ const View = () => {
         })}
       </Switch>
     </div>
-  );
+  )
 }
 
-export default View;
+export default View

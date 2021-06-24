@@ -1,14 +1,6 @@
 import React, { PureComponent, RefObject } from 'react'
 
-import {
-  message,
-  Popover,
-  Button,
-  Input,
-  Popconfirm,
-  FormInstance,
-  notification,
-} from 'antd'
+import { message, Popover, Button, Input, Popconfirm, FormInstance } from 'antd'
 
 const { TextArea } = Input
 
@@ -19,6 +11,8 @@ import { uncodeUtf16 } from '../../utils/emoji'
 import './editor.scss'
 
 import LoginForm from './Form'
+import { UserInfo } from '../../types'
+import { UserLogout } from '../../api/user'
 
 // 参数接口
 interface Props {}
@@ -35,6 +29,7 @@ interface EmojiPopover {
 
 // 状态接口
 interface State {
+  userinfo: UserInfo
   isLogin: boolean
   loginModal: LoginModal
   emojiPopover: EmojiPopover
@@ -45,6 +40,7 @@ export default class Editor extends PureComponent<Props, State> {
   fromRef: RefObject<FormInstance> = React.createRef()
 
   state: State = {
+    userinfo: {},
     isLogin: false,
     loginModal: {
       visible: false,
@@ -58,8 +54,9 @@ export default class Editor extends PureComponent<Props, State> {
   componentDidMount() {
     // notification.info({
     //   message: '给我留言吧~',
-    //   description: '你可以点击登录按钮给我留言哦,留下个人主页这样别人可以点击你的头像去到你的空间！',
-    //   duration: 10
+    //   description:
+    //     '你可以点击登录按钮给我留言哦,留下个人主页这样别人可以点击你的头像去到你的空间！',
+    //   duration: 10,
     // })
   }
 
@@ -73,11 +70,18 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   // 用户登出
-  logout = () => {
-    this.setState({
-      isLogin: false,
-    })
-    message.info('已登出，欢迎下次再来！')
+  logout = async () => {
+    if (await UserLogout()) {
+      this.setState(
+        {
+          isLogin: false,
+          userinfo: {},
+        },
+        () => {
+          message.info('已登出，欢迎下次再来！')
+        }
+      )
+    }
   }
 
   textAreaKeyDown = (e: any) => {
@@ -101,6 +105,19 @@ export default class Editor extends PureComponent<Props, State> {
     })
   }
 
+  leaveMessage = () => {
+    if (this.state.isLogin) {
+      // 留言接口
+      console.log(this.state.textarea)
+      message.success(`Hi ${this.state.userinfo.nickname} 感谢你的留言！`, 3)
+      this.setState({
+        textarea: '',
+      })
+      return
+    }
+    message.info('Hi 陌生人 请先登录哦！', 3)
+  }
+
   // 表情点击事件
   handleGetEmoji = (v: string) => {
     this.setState({
@@ -108,6 +125,16 @@ export default class Editor extends PureComponent<Props, State> {
     })
   }
 
+  // 设置用户数据
+  setUserinfo = (userinfo: UserInfo) => {
+    this.setState({
+      isLogin: true,
+      userinfo,
+    })
+    this.setVisible(false)
+  }
+
+  // 设置Modal弹窗显示
   setVisible = (status: boolean) => {
     this.setState({
       loginModal: {
@@ -123,7 +150,8 @@ export default class Editor extends PureComponent<Props, State> {
       maxCount: 3,
     })
 
-    const { isLogin, emojiPopover, loginModal, textarea } = this.state
+    const { userinfo, isLogin, emojiPopover, loginModal, textarea } = this.state
+
     const { setVisible } = this
 
     // 气泡弹窗
@@ -164,9 +192,17 @@ export default class Editor extends PureComponent<Props, State> {
       >
         <div className="editor-header">
           <h1>留言板</h1>
-          <p>你好啊 陌生人，欢迎给我留言哦~</p>
+          <p>
+            你好啊{' '}
+            {userinfo && userinfo.nickname ? userinfo.nickname : '陌生人'}
+            ，欢迎给我留言哦~
+          </p>
           <div className="loginBtns">{editorHeaderExtra}</div>
-          <LoginForm visible={loginModal.visible} setVisible={setVisible} />
+          <LoginForm
+            setUserInfo={this.setUserinfo}
+            visible={loginModal.visible}
+            setVisible={setVisible}
+          />
         </div>
         <div className="editor-inner">
           <TextArea
@@ -179,7 +215,7 @@ export default class Editor extends PureComponent<Props, State> {
             value={textarea}
             onChange={this.textAreaOnChange}
           />
-          <div className="bottom" style={{ display: 'flex' }}>
+          <div className="bottom">
             <div className="extra">
               <Popover
                 id="comm-popover"
@@ -220,7 +256,14 @@ export default class Editor extends PureComponent<Props, State> {
               <span className="tips">Ctrl + Enter 发表</span>
             </div>
             <div className="btns">
-              <Button className="submit"> 留言 </Button>
+              <Popconfirm
+                title="确定要提交留言么？"
+                okText="是"
+                cancelText="否"
+                onConfirm={this.leaveMessage}
+              >
+                <Button className="submit"> 留言 </Button>
+              </Popconfirm>
             </div>
           </div>
         </div>
