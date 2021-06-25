@@ -3,19 +3,24 @@ import './Comments.scss'
 
 import { List, Button, Skeleton } from 'antd'
 import { GetComments } from '../../api/comm'
+import { UserInfo } from '../../types'
 
-interface Props {}
+interface Props {
+  userinfo: UserInfo
+}
 
 interface State {}
 
 export default class Comments extends PureComponent<Props, State> {
   componentDidMount() {
-    GetComments().then((ret) => {
-      console.log(ret)
-    })
+    // GetComments().then((ret) => {
+    //   console.log(ret)
+    // })
   }
 
   render() {
+    // const { userinfo } = this.props
+
     // 加载更多
     const loadMore = (
       <div

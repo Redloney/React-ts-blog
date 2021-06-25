@@ -22,7 +22,7 @@
 
 
   li {
-    font-size: 20px;
+    font-size: 18px;
     padding: 5px;
     transform-origin: center;
     transition: 100ms linear;
@@ -31,7 +31,7 @@
 
     &:hover {
       transform: scale(1.25);
-      transition: 100ms linear;
+      transition: 100ms ease;
       background-color: #eee;
     }
   }

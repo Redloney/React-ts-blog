@@ -12,10 +12,13 @@ import './editor.scss'
 
 import LoginForm from './Form'
 import { UserInfo } from '../../types'
-import { UserLogout } from '../../api/user'
 
 // 参数接口
-interface Props {}
+interface Props {
+  userinfo: UserInfo
+  login: Function
+  logout: Function
+}
 
 // 登录框
 interface LoginModal {
@@ -29,8 +32,6 @@ interface EmojiPopover {
 
 // 状态接口
 interface State {
-  userinfo: UserInfo
-  isLogin: boolean
   loginModal: LoginModal
   emojiPopover: EmojiPopover
   textarea: string | number
@@ -40,8 +41,6 @@ export default class Editor extends PureComponent<Props, State> {
   fromRef: RefObject<FormInstance> = React.createRef()
 
   state: State = {
-    userinfo: {},
-    isLogin: false,
     loginModal: {
       visible: false,
     },
@@ -51,39 +50,21 @@ export default class Editor extends PureComponent<Props, State> {
     textarea: '',
   }
 
-  componentDidMount() {
-    // notification.info({
-    //   message: '给我留言吧~',
-    //   description:
-    //     '你可以点击登录按钮给我留言哦,留下个人主页这样别人可以点击你的头像去到你的空间！',
-    //   duration: 10,
-    // })
-  }
-
   // 用户登录
-  login = () => {
-    this.setState({
-      loginModal: {
-        visible: true,
-      },
-    })
+  login = async (userinfo: UserInfo) => {
+    return await this.props.login(userinfo)
   }
 
   // 用户登出
   logout = async () => {
-    if (await UserLogout()) {
-      this.setState(
-        {
-          isLogin: false,
-          userinfo: {},
-        },
-        () => {
-          message.info('已登出，欢迎下次再来！')
-        }
-      )
+    if (await this.props.logout()) {
+      message.info('已注销登录，欢迎下次再来！')
+      return
     }
+    console.warn('注销错误！')
   }
 
+  // 输入框按键按下
   textAreaKeyDown = (e: any) => {
     // ctrl + enter
     if (e.ctrlKey && e.keyCode === 13) {
@@ -91,6 +72,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
+  // 输入框内容改变
   textAreaOnChange = (e: any) => {
     this.setState({
       textarea: e.target.value,
@@ -106,10 +88,10 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   leaveMessage = () => {
-    if (this.state.isLogin) {
+    if (this.props.userinfo.isLogin) {
       // 留言接口
       console.log(this.state.textarea)
-      message.success(`Hi ${this.state.userinfo.nickname} 感谢你的留言！`, 3)
+      message.success(`Hi ${this.props.userinfo.nickname} 感谢你的留言！`, 3)
       this.setState({
         textarea: '',
       })
@@ -127,10 +109,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   // 设置用户数据
   setUserinfo = (userinfo: UserInfo) => {
-    this.setState({
-      isLogin: true,
-      userinfo,
-    })
+    this.props.login(userinfo)
     this.setVisible(false)
   }
 
@@ -150,7 +129,9 @@ export default class Editor extends PureComponent<Props, State> {
       maxCount: 3,
     })
 
-    const { userinfo, isLogin, emojiPopover, loginModal, textarea } = this.state
+    const { userinfo } = this.props
+
+    const { emojiPopover, loginModal, textarea } = this.state
 
     const { setVisible } = this
 
@@ -167,21 +148,21 @@ export default class Editor extends PureComponent<Props, State> {
       </ul>
     )
 
-    const editorHeaderExtra = isLogin ? (
-      <Popconfirm
-        title="确定要注销登录么？"
-        okText="是"
-        cancelText="否"
-        onConfirm={this.logout}
-      >
-        <Button type="text"> 注销 </Button>
-      </Popconfirm>
-    ) : (
-      <Button onClick={this.login} type="text">
-        {' '}
-        登录{' '}
-      </Button>
-    )
+    const editorHeaderExtra =
+      userinfo && userinfo.isLogin ? (
+        <Popconfirm
+          title="确定要注销登录么？"
+          okText="是"
+          cancelText="否"
+          onConfirm={this.logout}
+        >
+          <Button type="text">注销</Button>
+        </Popconfirm>
+      ) : (
+        <Button type="text" onClick={() => setVisible(true)}>
+          登录
+        </Button>
+      )
 
     return (
       <section
@@ -199,7 +180,8 @@ export default class Editor extends PureComponent<Props, State> {
           </p>
           <div className="loginBtns">{editorHeaderExtra}</div>
           <LoginForm
-            setUserInfo={this.setUserinfo}
+            login={this.login}
+            logout={this.logout}
             visible={loginModal.visible}
             setVisible={setVisible}
           />

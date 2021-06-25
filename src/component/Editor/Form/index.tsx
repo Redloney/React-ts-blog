@@ -1,21 +1,26 @@
 import React, { PureComponent, RefObject } from 'react'
+import './Form.scss'
 
+// antd
 import { Modal, Form, Radio, Input, Col, Row, message } from 'antd'
-
 import { ModalProps } from 'antd/lib/modal'
 import { FormInstance } from 'antd/lib/form'
 
-import './Form.scss'
+// http api
+import { ValidateUserExist } from '../../../api/user'
 
-import { ValidateUserExist, UserLogin, GetUserAddress } from '../../../api/user'
+// types
 import { UserInfo } from '../../../types'
 
+// props interface
 interface Props {
   setVisible: Function
-  setUserInfo: Function
+  login: Function
+  logout: Function
   visible: boolean | undefined
 }
 
+// state interface
 interface State {
   nickname: string
   gender: string
@@ -26,7 +31,7 @@ interface State {
   emailExist: boolean
 }
 
-export default class index extends PureComponent<Props, State> {
+class LoginForm extends PureComponent<Props, State> {
   state: State = {
     nickname: '',
     gender: '',
@@ -39,10 +44,12 @@ export default class index extends PureComponent<Props, State> {
 
   FormRef: RefObject<FormInstance> = React.createRef()
 
+  // 登录
   modalSubmit = () => {
     this.FormRef.current?.submit()
   }
 
+  // 取消
   modalCancel = () => {
     this.props.setVisible(false)
     this.FormRef.current?.resetFields()
@@ -50,23 +57,13 @@ export default class index extends PureComponent<Props, State> {
 
   // 请求登录接口
   submit = async (userinfo: UserInfo) => {
-    // 节流
-    let address = await GetUserAddress()
-    let ret: any = await UserLogin({ ...userinfo, address })
-    console.log(ret)
-    if (ret.data && !ret.msg) {
-      const user = ret.data
-      message.success('欢迎你! ' + user.nickname, 3)
-      this.props.setUserInfo(user)
+    if (await this.props.login(userinfo)) {
       this.modalCancel()
-    } else {
-      message.warn('登录失败! ' + ret.msg, 3)
     }
   }
 
   render() {
     const { visible } = this.props
-    const {} = this.state
     const { modalSubmit, modalCancel, submit } = this
 
     // Modal 配置参数
@@ -222,3 +219,5 @@ export default class index extends PureComponent<Props, State> {
     )
   }
 }
+
+export default LoginForm
