@@ -5,8 +5,10 @@
 .ant-modal-header,
 .ant-modal-footer {
   border: none;
+  user-select: none;
 }
 
 .ant-modal-body {
   padding-top: 0;
+  user-select: none;
 }

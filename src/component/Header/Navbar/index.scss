@@ -1,9 +1,8 @@
 .nav {
-  margin: 30px 0;
+  margin: 30px 0 80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: Marydale;
 
   .nav-link {
     margin: 0 15px;
@@ -17,9 +16,10 @@
     text-align: center;
     position: relative;
     padding-bottom: 5px;
-    letter-spacing: 2px;
+    letter-spacing: 5px;
     font-size: clamp(12px, .95rem, 1.75rem);
     filter: drop-shadow(2.5px 2.5px 2px black);
+    font-family: 'SentyTEA';
 
     &::before {
       content: '';

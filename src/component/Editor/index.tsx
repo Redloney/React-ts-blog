@@ -1,6 +1,6 @@
 import React, { PureComponent, RefObject } from 'react'
 
-import { message, Popover, Button, Input, Popconfirm, FormInstance } from 'antd'
+import { message, Popover, Button, Input, Popconfirm } from 'antd'
 
 const { TextArea } = Input
 
@@ -12,6 +12,8 @@ import './editor.scss'
 
 import LoginForm from './Form'
 import { UserInfo } from '../../types'
+import { TextAreaRef } from 'antd/lib/input/TextArea'
+import { InsertComment } from '../../api/comm'
 
 // 参数接口
 interface Props {
@@ -34,11 +36,13 @@ interface EmojiPopover {
 interface State {
   loginModal: LoginModal
   emojiPopover: EmojiPopover
-  textarea: string | number
+  textarea: string
+  replyId: string
 }
 
 export default class Editor extends PureComponent<Props, State> {
-  fromRef: RefObject<FormInstance> = React.createRef()
+  // TextArea Dom
+  inputRef: RefObject<TextAreaRef> = React.createRef()
 
   state: State = {
     loginModal: {
@@ -48,6 +52,7 @@ export default class Editor extends PureComponent<Props, State> {
       visible: false,
     },
     textarea: '',
+    replyId: '',
   }
 
   // 用户登录
@@ -87,14 +92,37 @@ export default class Editor extends PureComponent<Props, State> {
     })
   }
 
-  leaveMessage = () => {
+  // replyTo = (user: UserInfo, fId: string) => {
+  //   this.setState({
+  //     textarea: `@ ${user.nickname} :`,
+  //     replyId: fId,
+  //   })
+  // }
+
+  leaveMessage = async () => {
+    const content = this.state.textarea
+    const replyId = this.state.replyId
     if (this.props.userinfo.isLogin) {
+      if (!content) {
+        message.warn('留言不可以为空哦！', 3)
+        this.inputRef.current?.focus()
+        return
+      }
+      if (content.length < 5) {
+        message.warning(' 提交失败、再多写一点吧', 3)
+        return
+      }
+      if (content.length > 300) {
+        message.warning('提交失败、留言字数超出限制')
+        return
+      }
       // 留言接口
-      console.log(this.state.textarea)
-      message.success(`Hi ${this.props.userinfo.nickname} 感谢你的留言！`, 3)
-      this.setState({
-        textarea: '',
-      })
+      const { code, comment }: any = await InsertComment({ content, replyId })
+      console.log(code, comment)
+      if (code && comment) {
+        message.success(`Hi ${this.props.userinfo.nickname} 感谢你的留言！`, 3)
+        this.setState({ textarea: '', replyId: '' })
+      }
       return
     }
     message.info('Hi 陌生人 请先登录哦！', 3)
@@ -188,6 +216,7 @@ export default class Editor extends PureComponent<Props, State> {
         </div>
         <div className="editor-inner">
           <TextArea
+            ref={this.inputRef}
             minLength={3}
             maxLength={300}
             showCount

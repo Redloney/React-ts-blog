@@ -5,9 +5,20 @@
   letter-spacing: .08rem;
   color: #fff;
 
-  P {
+  .copyright {
     font-weight: bold;
-    margin-bottom: 0;
+    font-family: SentyTEA;
+    filter: drop-shadow(0 0 5px black);
+    user-select: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .power {
+    font-size: 10px;
+    font-weight: bold;
     font-family: SentyTEA;
     filter: drop-shadow(0 0 5px black);
     user-select: none;

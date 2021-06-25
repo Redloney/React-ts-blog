@@ -10,7 +10,7 @@ export const GetComments = (page: number = 0, size: number = 15, sorter: string 
         url: '/api/comments',
         params: { page, size, sorter, ...obj }
       })
-      data.code && data.count > 1 ? resolve(data) : resolve([])
+      data.code && data.count >= 1 ? resolve(data) : resolve([])
     } catch (err) {
       console.log(err)
       resolve([])
@@ -19,15 +19,16 @@ export const GetComments = (page: number = 0, size: number = 15, sorter: string 
 }
 
 // 添加评论
-export const InsertComment = (comment: Comment) => {
+export const InsertComment = ({ content, replyId }: any) => {
   return new Promise(async (resolve, _reject) => {
     try {
       const { data } = await axios({
         method: "POST",
         url: '/api/comment/insert',
-        data: { comment }
+        data: { content, replyId }
       })
-      data.code && data.count > 1 ? resolve(data) : resolve([])
+      console.log(data)
+      data && data.code ? resolve(data) : resolve([])
     } catch (err) {
       console.log(err)
       resolve([])

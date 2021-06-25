@@ -28,6 +28,9 @@ class Comment extends PureComponent<Props, State> {
   // 组件挂载
   componentDidMount() {
     // console.log(this.props)
+    document && document.documentElement
+      ? (document.documentElement.scrollTop = 0)
+      : null
   }
 
   // 组件卸载
@@ -45,9 +48,7 @@ class Comment extends PureComponent<Props, State> {
       }: any = await UserLogin({ ...userinfo, address })
       if (user && code) {
         storage.set('userinfo', user)
-        this.setState({
-          userinfo: user,
-        })
+        this.props.login(user)
         message.destroy()
         message.success('欢迎你! ' + user.nickname, 3)
         return true
