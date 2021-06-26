@@ -2,14 +2,15 @@ export type StoreState = number
 
 export type UserInfo = {
   _id?: string,
+  avatar?: string,
   nickname?: string,
   gender?: string,
   email?: string,
   weburl?: string,
   address?: object,
   isLogin?: boolean
-  createAt?: string,
-  updateAt?: string
+  createdAt?: string,
+  updatedAt?: string
 }
 
 export type Children = {
@@ -18,8 +19,8 @@ export type Children = {
   content?: string,
   thumbNum?: number,
   commNum?: number,
-  createAt?: string,
-  updateAt?: string,
+  createdAt?: string,
+  updatedAt?: string,
   isDel?: boolean
 }
 
@@ -29,8 +30,8 @@ export type Comment = {
   content?: string,
   thumbNum?: number,
   commNum?: number,
-  createAt?: string,
-  updateAt?: string,
+  createdAt?: string,
+  updatedAt?: string,
   children?: Children | undefined,
   isDel?: boolean
 }

@@ -27,6 +27,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: path => path.replace(/^\/map/, '')
       },
+      '^/avatar': {
+        target: 'http://api.btstu.cn/sjtx/api.php',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/avatar/, '')
+      }
     }
   },
   css: {

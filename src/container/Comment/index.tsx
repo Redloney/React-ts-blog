@@ -7,45 +7,57 @@ import Comments from '../../component/Comments'
 // redux
 import { connect } from 'react-redux'
 import { login, logout } from '../../store/actions/userinfo'
-import { UserInfo } from '../../types'
+import { setComments } from '../../store/actions/comments'
+import { UserInfo, Comment as IComment } from '../../types'
 import storage from '../../utils/storage'
-import { GetUserAddress, UserLogin } from '../../api/user'
+import { GetRandomAvatar, GetUserAddress, UserLogin } from '../../api/user'
 import { message } from 'antd'
+import { DeleteComment, GetComments } from '../../api/comm'
 
 interface Props {
+  comments: Array<IComment>
   userinfo: UserInfo
   login: Function
   logout: Function
+  setComments: Function
 }
 
-interface State {
-  userinfo: UserInfo
-}
+interface State {}
 
 // @ts-ignore
-@connect((state) => state, { login, logout })
+@connect((state) => state, { login, logout, setComments })
 class Comment extends PureComponent<Props, State> {
+  EditorRef: any = React.createRef()
+
   // 组件挂载
   componentDidMount() {
-    // console.log(this.props)
-    document && document.documentElement
-      ? (document.documentElement.scrollTop = 0)
-      : null
+    // document && document.documentElement
+    //   ? (document.documentElement.scrollTop = 0)
+    //   : null
+    this.updateComments()
   }
 
-  // 组件卸载
-  componentWillUnmount() {}
+  updateComments = async () => {
+    try {
+      const { comments, code } = (await GetComments()) as any
+      this.props.setComments(code ? comments : [])
+    } catch (err) {
+      console.warn(err)
+    }
+  }
+
   // 登录
   login = async (userinfo: UserInfo) => {
     try {
       // 用户地址
       let address = await GetUserAddress()
+      let { imgurl: avatar } = (await GetRandomAvatar(userinfo.gender)) as any
       // 用户信息
       let {
         data: user,
         msg,
         code,
-      }: any = await UserLogin({ ...userinfo, address })
+      }: any = await UserLogin({ ...userinfo, avatar, address })
       if (user && code) {
         storage.set('userinfo', user)
         this.props.login(user)
@@ -73,15 +85,35 @@ class Comment extends PureComponent<Props, State> {
     }
   }
 
-  render() {
-    const { userinfo } = this.props
+  //  删除评论
+  deleteComment = async (fId: string, id: string) => {
+    try {
+      if (await DeleteComment(fId, id)) {
+        this.updateComments()
+        return true
+      }
+      return false
+    } catch (err) {
+      console.log(err)
+      return false
+    }
+  }
 
-    const { login, logout } = this
+  render() {
+    const { userinfo, comments } = this.props
+
+    const { login, logout, deleteComment } = this
 
     return (
       <div className="comment">
-        <Editor userinfo={userinfo} login={login} logout={logout} />
-        <Comments userinfo={userinfo} />
+        <Editor
+          deleteComment={deleteComment}
+          updateComments={this.updateComments}
+          userinfo={userinfo}
+          comments={comments}
+          login={login}
+          logout={logout}
+        />
       </div>
     )
   }

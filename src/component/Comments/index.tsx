@@ -10,58 +10,49 @@ import {
   Tooltip,
   Avatar,
 } from 'antd'
-import { GetComments } from '../../api/comm'
 import { Children, Comment, UserInfo } from '../../types'
 
 import dayjs from '../../utils/day'
 
 interface Props {
   userinfo: UserInfo
+  comments: Array<Comment>
+  replyTo: Function
+  deleteComment: Function
 }
 
-interface State {
-  comments: Array<any>
-  count: Number
-}
+interface State {}
 
 export default class Comments extends PureComponent<Props, State> {
-  state: State = {
-    comments: [],
-    count: 0,
-  }
-
-  componentDidMount() {
-    GetComments().then((ret: any) => {
-      this.setState({
-        comments: ret.comments,
-        count: ret.count,
-      })
-      console.log(ret)
-    })
-  }
-
   //删除评论
-  deleteComment(
-    _id: string | undefined,
-    id: string | undefined,
-    fId: string | undefined
-  ) {
-    console.log(_id, id, fId)
+  deleteComment = (fId: string | undefined, commId: string | undefined) => {
+    this.props.deleteComment(fId, commId)
+  }
+
+  // 回复
+  replyTo = (comm: Comment, _id: string | undefined) => {
+    this.props.replyTo(comm, _id)
   }
 
   render() {
     const { _id } = this.props.userinfo
 
+    const { comments } = this.props
+
     const { deleteComment } = this
 
     const extra = (Comm: Comment, fId: string | undefined) => {
-      const extra = [<span className="reply">回复</span>]
+      const extra = [
+        <span className="reply" onClick={() => this.replyTo(Comm, _id)}>
+          回复
+        </span>,
+      ]
 
       let del = (
         <Popconfirm
           title="是否要删除此条留言?"
           okText="确定"
-          onConfirm={() => deleteComment(_id, Comm._id, fId)}
+          onConfirm={() => deleteComment(fId, Comm._id)}
           cancelText="取消"
         >
           <span className="del">删除</span>
@@ -92,10 +83,10 @@ export default class Comments extends PureComponent<Props, State> {
       chilComm: Children | undefined,
       fId: string | undefined
     ) => {
-      const { userinfo, content, createAt } = Comm
-      const { nickname, weburl } = userinfo
+      const { userinfo, content, createdAt } = Comm
+      const { nickname, weburl, avatar } = userinfo
 
-      const date = dayjs(createAt).fromNow()
+      const date = dayjs(createdAt).fromNow()
 
       const DateTime = (
         <Tooltip title={date}>
@@ -104,7 +95,7 @@ export default class Comments extends PureComponent<Props, State> {
       )
 
       const UserAvatar = !weburl ? (
-        <Avatar style={{ backgroundColor: 'pink', cursor: 'default' }}>
+        <Avatar src={avatar} style={{ cursor: 'default' }}>
           {nickname?.substr(0, 1).toUpperCase()}
         </Avatar>
       ) : (
@@ -114,7 +105,7 @@ export default class Comments extends PureComponent<Props, State> {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Avatar style={{ backgroundColor: 'pink', cursor: 'default' }}>
+          <Avatar src={avatar} style={{ cursor: 'default' }}>
             {nickname?.substr(0, 1).toUpperCase()}
           </Avatar>
         </a>
@@ -154,7 +145,7 @@ export default class Comments extends PureComponent<Props, State> {
           data-aos-delay={index * 10}
           data-aos-duration={850}
         >
-          <small>{this.state.comments.length - index}楼</small>
+          <small>{comments.length - index}楼</small>
           {/* 传入 自己 自己的子评论 自己的id */}
           {comment(Comm, Comm.children, Comm._id)}
         </List.Item>
@@ -188,14 +179,14 @@ export default class Comments extends PureComponent<Props, State> {
       </List.Item>,
     ]
 
-    const CommentLists = this.state.comments ? (
+    const CommentLists = comments ? (
       <List
         className="comment-list"
         itemLayout="horizontal"
         size="small"
         split
         loadMore={loadMore}
-        dataSource={this.state.comments}
+        dataSource={comments}
         renderItem={mapComments}
       />
     ) : (

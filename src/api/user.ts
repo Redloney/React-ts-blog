@@ -1,5 +1,24 @@
 import axios from './axios'
 
+export const GetRandomAvatar = (gender: string | undefined) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let lx = gender === 'male' ? 'a1' : 'b1'
+      const { data } = await axios({
+        method: "GET",
+        url: '/avatar',
+        params: {
+          lx,
+          format: 'json'
+        }
+      })
+      data.code ? resolve(data) : resolve({})
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
 export const ValidateUserExist = (validate: {}) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -14,6 +33,7 @@ export const ValidateUserExist = (validate: {}) => {
 export const UserLogin = (userinfo: object) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log(userinfo)
       const { data } = await axios.post('/api/user/login', { ...userinfo })
       resolve(data)
     } catch (err) {

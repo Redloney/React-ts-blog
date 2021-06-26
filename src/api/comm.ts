@@ -7,7 +7,7 @@ export const GetComments = (page: number = 0, size: number = 15, sorter: string 
     try {
       const { data } = await axios({
         method: "GET",
-        url: '/api/comments',
+        url: '/api/comment/list',
         params: { page, size, sorter, ...obj }
       })
       data.code && data.count >= 1 ? resolve(data) : resolve([])
@@ -38,10 +38,10 @@ export const InsertComment = ({ content, replyId }: any) => {
 
 
 // 删除评论
-export const deleteComment = (uId: string, _id: string, fId: string) => {
+export const DeleteComment = (fId: string, id: string) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { data } = await axios.post('/comment/delete', { uId, _id, fId })
+      const { data } = await axios.post('/api/comment/delete', { fId, id })
       data.code ? resolve(true) : resolve(false)
     } catch (err) {
       reject(err)
