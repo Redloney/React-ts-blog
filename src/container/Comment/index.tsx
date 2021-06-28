@@ -2,33 +2,40 @@ import React, { PureComponent } from 'react'
 import './comment.scss'
 
 import Editor from '../../component/Editor'
-import Comments from '../../component/Comments'
+
+import storage from '../../utils/storage'
+
+//antd
+import { message } from 'antd'
 
 // redux
 import { connect } from 'react-redux'
 import { login, logout } from '../../store/actions/userinfo'
-import { setComments } from '../../store/actions/comments'
+import { getComments, payload } from '../../store/actions/comments'
 import { UserInfo, Comment as IComment } from '../../types'
-import storage from '../../utils/storage'
-import { GetRandomAvatar, GetUserAddress, UserLogin } from '../../api/user'
-import { message } from 'antd'
+
+// http api
 import { DeleteComment, GetComments } from '../../api/comm'
+import { GetRandomAvatar, GetUserAddress, UserLogin } from '../../api/user'
 
 interface Props {
-  comments: Array<IComment>
+  comments: payload
   userinfo: UserInfo
   login: Function
   logout: Function
-  setComments: Function
+  getComments: Function
 }
 
-interface State {}
+interface State {
+  size: number
+}
 
 // @ts-ignore
-@connect((state) => state, { login, logout, setComments })
+@connect((state) => state, { login, logout, getComments })
 class Comment extends PureComponent<Props, State> {
-  EditorRef: any = React.createRef()
-
+  state: State = {
+    size: 15,
+  }
   // 组件挂载
   componentDidMount() {
     // document && document.documentElement
@@ -39,8 +46,22 @@ class Comment extends PureComponent<Props, State> {
 
   updateComments = async () => {
     try {
-      const { comments, code } = (await GetComments()) as any
-      this.props.setComments(code ? comments : [])
+      const { size } = this.state
+      const { page } = this.props.comments
+      let { comments }: any = await GetComments(page, size)
+      this.props.getComments({ page, size, comments })
+    } catch (err) {
+      console.warn(err)
+    }
+  }
+
+  getMore = async () => {
+    try {
+      const { size } = this.state
+      const { page, count } = this.props.comments
+      console.log(count)
+      let { comments }: any = await GetComments(page + 1, size)
+      this.props.getComments({ page: page + 1, size, comments })
     } catch (err) {
       console.warn(err)
     }
@@ -100,9 +121,9 @@ class Comment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { userinfo, comments } = this.props
-
-    const { login, logout, deleteComment } = this
+    const { userinfo } = this.props
+    const { comments } = this.props.comments
+    const { login, logout, getMore, deleteComment } = this
 
     return (
       <div className="comment">
@@ -113,6 +134,7 @@ class Comment extends PureComponent<Props, State> {
           comments={comments}
           login={login}
           logout={logout}
+          getMore={getMore}
         />
       </div>
     )

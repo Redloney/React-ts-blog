@@ -1,4 +1,3 @@
-import { Comment } from '../types'
 import axios from './axios'
 
 // 获取评论
@@ -12,7 +11,6 @@ export const GetComments = (page: number = 0, size: number = 15, sorter: string 
       })
       data.code && data.count >= 1 ? resolve(data) : resolve([])
     } catch (err) {
-      console.log(err)
       resolve([])
     }
   })
@@ -27,10 +25,8 @@ export const InsertComment = ({ content, replyId }: any) => {
         url: '/api/comment/insert',
         data: { content, replyId }
       })
-      console.log(data)
       data && data.code ? resolve(data) : resolve([])
     } catch (err) {
-      console.log(err)
       resolve([])
     }
   })

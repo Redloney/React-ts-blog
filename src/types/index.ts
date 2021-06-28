@@ -32,6 +32,6 @@ export type Comment = {
   commNum?: number,
   createdAt?: string,
   updatedAt?: string,
-  children?: Children | undefined,
+  children?: Array<Children> | undefined,
   isDel?: boolean
 }

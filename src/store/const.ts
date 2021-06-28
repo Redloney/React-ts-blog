@@ -6,6 +6,10 @@ export type SET_USERINFO_TYPE = typeof SET_USERINFO
 export const DEL_USERINFO = 'DEL_USERINFO'
 export type DEL_UPSERINFO_TYPE = typeof DEL_USERINFO
 
-// 设置留言信息
-export const SET_COMMENTS = 'SET_COMMENTS'
-export type SET_COMMENTS_TYPE = typeof SET_COMMENTS
+// 获取留言列表
+export const GET_COMMENTS = 'GET_COMMENTS'
+export type GET_COMMENTS_TYPE = typeof GET_COMMENTS
+
+// 清除留言列表
+export const CLEAR_COMMENTS = 'CLEAR_COMMENTS'
+export type CLEAR_COMMENTS_TYPE = typeof CLEAR_COMMENTS

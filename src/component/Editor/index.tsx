@@ -20,9 +20,10 @@ import { InsertComment } from '../../api/comm'
 // 参数接口
 interface Props {
   userinfo: UserInfo
-  comments: Array<IComment>
+  comments: Array<IComment> | undefined
   login: Function
   logout: Function
+  getMore: Function
   updateComments: Function
   deleteComment: Function
 }
@@ -77,10 +78,15 @@ export default class Editor extends PureComponent<Props, State> {
   replyTo = (comm: IComment, _id: string) => {
     let nickname = comm.userinfo.nickname
     this.inputRef.current?.focus()
-    this.setState({
-      textarea: `@ ${nickname}: `,
-      replyId: _id,
-    })
+    this.setState(
+      {
+        textarea: `@ ${nickname}: `,
+        replyId: _id,
+      },
+      () => {
+        console.log(this.state.replyId)
+      }
+    )
   }
 
   // 输入框按键按下
@@ -160,7 +166,7 @@ export default class Editor extends PureComponent<Props, State> {
       maxCount: 3,
     })
 
-    const { userinfo, comments, deleteComment } = this.props
+    const { userinfo, comments, deleteComment, getMore } = this.props
 
     const { emojiPopover, loginModal, textarea } = this.state
 
@@ -284,6 +290,7 @@ export default class Editor extends PureComponent<Props, State> {
           </div>
         </section>
         <Comments
+          getMore={getMore}
           replyTo={replyTo}
           comments={comments}
           userinfo={userinfo}

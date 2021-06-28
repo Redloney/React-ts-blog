@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { GetRandomAvatar } from '../../api/user'
 
 interface IProps {
   id: string
@@ -12,7 +13,18 @@ interface IProps {
 import './Card.scss'
 
 export const Card = (props: IProps) => {
-  const { id, imgUrl, title, tag, createAt, author } = props
+  const { id, title, tag, createAt, author } = props
+
+  const [imgUrl, setimgUrl] = useState('')
+
+  useEffect(() => {
+    getImgUrl()
+  }, [])
+
+  const getImgUrl = async () => {
+    const { imgurl } = (await GetRandomAvatar('mail')) as any
+    setimgUrl(imgurl)
+  }
 
   return (
     <div className="card">
