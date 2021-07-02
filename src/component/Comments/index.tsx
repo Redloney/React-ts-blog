@@ -16,7 +16,7 @@ import dayjs from '../../utils/day'
 
 interface Props {
   userinfo: UserInfo
-  comments: Array<Comment> | undefined
+  comments: Array<Comment>
   replyTo: Function
   getMore: Function
   deleteComment: Function

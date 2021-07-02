@@ -20,7 +20,7 @@ import { GetRandomAvatar, GetUserAddress, UserLogin } from '../../api/user'
 import { Search } from '../../component/Search'
 
 interface Props {
-  comments: payload
+  comments: any
   userinfo: UserInfo
   login: Function
   logout: Function
@@ -55,6 +55,8 @@ class Comment extends PureComponent<Props, State> {
       console.warn(err)
     }
   }
+
+  thumbComment = () => {}
 
   getMore = async () => {
     try {
@@ -124,12 +126,13 @@ class Comment extends PureComponent<Props, State> {
   render() {
     const { userinfo } = this.props
     const { comments } = this.props.comments
-    const { login, logout, getMore, deleteComment } = this
+    const { login, logout, getMore, deleteComment, thumbComment } = this
 
     return (
       <div className="comment">
         {/* <Search /> */}
         <Editor
+          thumbComment={thumbComment}
           deleteComment={deleteComment}
           updateComments={this.updateComments}
           userinfo={userinfo}
