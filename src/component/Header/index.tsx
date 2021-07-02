@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import './index.scss'
 
 import { Link } from 'react-router-dom'
 
-// import img from './preview.jpg'
+import avatar from './avatar.png'
 
 import { Avatar } from 'antd'
 
 import Navbar from './Navbar'
-import { GetRandomAvatar } from '../../api/user'
 
 const Header = () => {
   const links = [
@@ -26,16 +25,6 @@ const Header = () => {
       path: '/Comment',
     },
   ]
-
-  const [avatar, setAvatar] = useState(
-    'https://tva2.sinaimg.cn/large/9bd9b167ly1fzjwjepj2kj20b40b4aak.jpg'
-  )
-
-  useEffect(() => {
-    GetRandomAvatar('female').then((ret: any) => {
-      setAvatar(ret.imgurl)
-    })
-  }, [])
 
   return (
     <header className="header">
