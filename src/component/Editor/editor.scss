@@ -90,20 +90,16 @@
         }
 
 
-        .icon {
+        .iconfont {
           display: flex;
           align-items: center;
           margin-right: 5px;
           transform-origin: center;
-          transition: 100ms linear;
           cursor: pointer;
           fill: #333333b2;
 
           &:hover {
             fill: #333333;
-
-            // transform: scale(1.05);
-            transition: 100ms linear;
           }
         }
       }

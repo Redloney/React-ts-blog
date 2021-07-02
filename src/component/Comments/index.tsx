@@ -20,20 +20,32 @@ interface Props {
   replyTo: Function
   getMore: Function
   deleteComment: Function
+  thumbComment: Function
 }
 
-interface State {}
+interface State {
+  isThumb: boolean
+}
 
 export default class Comments extends PureComponent<Props, State> {
+  state = {
+    isThumb: false,
+  }
+
   //删除评论
   deleteComment = (fId: string | undefined, commId: string | undefined) => {
     this.props.deleteComment(fId, commId)
   }
 
   // 回复
-  replyTo = (comm: Comment, _id: string | undefined) => {
-    console.log(_id)
-    this.props.replyTo(comm, _id)
+  replyTo = (e: any, comm: Comment, _id: string | undefined) => {
+    let screenY = document.documentElement.scrollTop
+    this.props.replyTo(comm, _id, screenY)
+  }
+
+  thumbComment = (comm: Comment, _id: string | undefined) => {
+    let isThumb = !this.state.isThumb
+    this.props.thumbComment(comm, _id, isThumb)
   }
 
   getMore = () => {
@@ -45,30 +57,22 @@ export default class Comments extends PureComponent<Props, State> {
 
     const { comments } = this.props
 
-    const { deleteComment, getMore } = this
+    const { deleteComment, thumbComment, replyTo, getMore } = this
 
     const extra = (Comm: Comment, fId: string | undefined) => {
       const extra = [
-        // <span className="thumb">
-        //   <svg
-        //     t="1624705081851"
-        //     class="icon"
-        //     viewBox="0 0 1024 1024"
-        //     version="1.1"
-        //     xmlns="http://www.w3.org/2000/svg"
-        //     p-id="2977"
-        //     width="15"
-        //     height="15"
-        //   >
-        //     <path
-        //       d="M780.8 981.333333H170.666667a128 128 0 0 1-128-128v-298.666666a128 128 0 0 1 128-128h100.266666l159.573334-358.826667A42.666667 42.666667 0 0 1 469.333333 42.666667a170.666667 170.666667 0 0 1 170.666667 170.666666v128H859.306667a128 128 0 0 1 107.093333 145.92l-58.88 384A128 128 0 0 1 780.8 981.333333zM341.333333 896h438.613334a42.666667 42.666667 0 0 0 42.666666-36.266667l58.88-384a42.666667 42.666667 0 0 0-35.413333-49.066666H597.333333a42.666667 42.666667 0 0 1-42.666666-42.666667V213.333333a85.333333 85.333333 0 0 0-59.306667-81.493333L341.333333 478.293333z m-170.666666-384a42.666667 42.666667 0 0 0-42.666667 42.666667v298.666666a42.666667 42.666667 0 0 0 42.666667 42.666667h85.333333v-384z"
-        //       p-id="2978"
-        //       fill="#515151"
-        //     ></path>
-        //   </svg>
-        // </span>,
-        <span className="reply" onClick={() => this.replyTo(Comm, fId)}>
-          回复
+        <span
+          className={`thumb ${this.state.isThumb ? 'isThumb' : null}`}
+          onClick={() => thumbComment(Comm, fId)}
+        >
+          <i className="iconfont iconthumbs-up"></i>
+          {/* <span className="num">
+            {this.state.isThumb ? (Comm.thumbNum as any) + 1 : Comm.thumbNum}
+          </span> */}
+        </span>,
+        <span className="reply" onClick={(e) => replyTo(e, Comm, fId)}>
+          <i className="iconfont iconcomment"></i>
+          {/* <span className="num">{Comm.commNum}</span> */}
         </span>,
       ]
 
@@ -79,7 +83,9 @@ export default class Comments extends PureComponent<Props, State> {
           onConfirm={() => deleteComment(fId, Comm._id)}
           cancelText="取消"
         >
-          <span className="del">删除</span>
+          <span className="del">
+            <i className="iconfont iconshanchu"></i>
+          </span>
         </Popconfirm>
       )
 
@@ -102,6 +108,7 @@ export default class Comments extends PureComponent<Props, State> {
       </div>
     )
 
+    // 评论摸版 ---> 未来抽离
     const comment = (
       Comm: Comment,
       fId: string | undefined,

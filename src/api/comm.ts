@@ -9,6 +9,7 @@ export const GetComments = (page: number = 0, size: number = 15, sorter: string 
         url: '/api/comment/list',
         params: { page, size, sorter, ...obj }
       })
+      console.log(data)
       data.code && data.count >= 1 ? resolve(data) : resolve([])
     } catch (err) {
       resolve([])
@@ -26,6 +27,22 @@ export const InsertComment = ({ content, replyId }: any) => {
         data: { content, replyId }
       })
       data && data.code ? resolve(data) : resolve([])
+    } catch (err) {
+      resolve([])
+    }
+  })
+}
+// 添加评论
+export const ThumbComment = (id: string | undefined, fId: string, isThumb: boolean) => {
+  return new Promise(async (resolve, _reject) => {
+    try {
+      const { data } = await axios({
+        method: "POST",
+        url: '/api/comment/thumb',
+        data: { id, fId, isThumb }
+      })
+      // data && data.code ? resolve(data) : resolve([])
+      resolve(data)
     } catch (err) {
       resolve([])
     }

@@ -15,7 +15,7 @@ import './editor.scss'
 import LoginForm from './Form'
 import { UserInfo, Comment as IComment } from '../../types'
 import { TextAreaRef } from 'antd/lib/input/TextArea'
-import { InsertComment } from '../../api/comm'
+import { InsertComment, ThumbComment } from '../../api/comm'
 
 // 参数接口
 interface Props {
@@ -25,6 +25,7 @@ interface Props {
   logout: Function
   getMore: Function
   updateComments: Function
+  thumbComment: Function
   deleteComment: Function
 }
 
@@ -44,11 +45,13 @@ interface State {
   emojiPopover: EmojiPopover
   textarea: string
   replyId: string
+  commPosition: number
 }
 
 export default class Editor extends PureComponent<Props, State> {
   // TextArea Dom
   inputRef: RefObject<TextAreaRef> = React.createRef()
+  PopRef: RefObject<any> = React.createRef()
 
   state: State = {
     loginModal: {
@@ -59,6 +62,7 @@ export default class Editor extends PureComponent<Props, State> {
     },
     textarea: '',
     replyId: '',
+    commPosition: 0,
   }
 
   // 用户登录
@@ -75,25 +79,29 @@ export default class Editor extends PureComponent<Props, State> {
     console.warn('注销错误！')
   }
 
-  replyTo = (comm: IComment, _id: string) => {
+  thumbComment = (comm: IComment, fId: string, isThumb: boolean) => {
+    // ThumbComment(comm._id, fId, isThumb).then((res) => {
+    //   console.log(res)
+    // })
+    message.info('点赞功能暂未开放！', 3)
+  }
+
+  replyTo = (comm: IComment, _id: string, screenY: number) => {
+    // console.log(this)
     let nickname = comm.userinfo.nickname
     this.inputRef.current?.focus()
-    this.setState(
-      {
-        textarea: `@ ${nickname}: `,
-        replyId: _id,
-      },
-      () => {
-        console.log(this.state.replyId)
-      }
-    )
+    this.setState({
+      textarea: `@ ${nickname}: `,
+      replyId: _id,
+      commPosition: screenY,
+    })
   }
 
   // 输入框按键按下
   textAreaKeyDown = (e: any) => {
     // ctrl + enter
     if (e.ctrlKey && e.keyCode === 13) {
-      console.log(this.state.textarea)
+      this.leaveMessage()
     }
   }
 
@@ -151,7 +159,10 @@ export default class Editor extends PureComponent<Props, State> {
       const { code, comment }: any = await InsertComment({ content, replyId })
       if (code && comment) {
         message.success(`Hi ${this.props.userinfo.nickname} 感谢你的留言！`, 3)
-        this.setState({ textarea: '', replyId: '' })
+        this.state.commPosition === 0
+          ? null
+          : (document.documentElement.scrollTop = this.state.commPosition)
+        this.setState({ textarea: '', replyId: '', commPosition: 0 })
         this.props.updateComments()
       }
       return
@@ -170,7 +181,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const { emojiPopover, loginModal, textarea } = this.state
 
-    const { replyTo, setVisible, login, logout } = this
+    const { replyTo, thumbComment, setVisible, login, logout } = this
 
     // 气泡弹窗
     const popover = (
@@ -262,6 +273,7 @@ export default class Editor extends PureComponent<Props, State> {
               </div>
               <div className="btns">
                 <Popconfirm
+                  ref={this.PopRef}
                   title="确定要提交留言么？"
                   okText="是"
                   cancelText="否"
@@ -278,6 +290,7 @@ export default class Editor extends PureComponent<Props, State> {
           replyTo={replyTo}
           comments={comments}
           userinfo={userinfo}
+          thumbComment={thumbComment}
           deleteComment={deleteComment}
         />
       </Fragment>

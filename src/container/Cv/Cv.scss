@@ -28,7 +28,7 @@
       text-align: left;
       padding-left: 15px;
       margin-left: -15px;
-      border-left: 5px solid #f36;
+      border-left: 5px solid skyblue;
     }
 
     .ant-row {
@@ -47,5 +47,15 @@
       }
     }
 
+    p {
+      margin-bottom: 0;
+      line-height: 30px;
+    }
+
   }
+
+  .bold {
+    font-weight: bold;
+  }
+
 }
