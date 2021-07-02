@@ -19,7 +19,7 @@ import { DeleteComment, GetComments } from '../../api/comm'
 import { GetRandomAvatar, GetUserAddress, UserLogin } from '../../api/user'
 
 interface Props {
-  comments: payload
+  comments: any
   userinfo: UserInfo
   login: Function
   logout: Function
