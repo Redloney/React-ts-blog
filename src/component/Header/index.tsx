@@ -16,10 +16,10 @@ const Header = () => {
       title: '简历',
       path: '/Cv',
     },
-    {
-      title: '博客',
-      path: '/Blog',
-    },
+    // {
+    //   title: '博客',
+    //   path: '/Blog',
+    // },
     {
       title: '留言',
       path: '/Comment',
