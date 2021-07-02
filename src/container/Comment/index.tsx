@@ -17,6 +17,7 @@ import { UserInfo, Comment as IComment } from '../../types'
 // http api
 import { DeleteComment, GetComments } from '../../api/comm'
 import { GetRandomAvatar, GetUserAddress, UserLogin } from '../../api/user'
+import { Search } from '../../component/Search'
 
 interface Props {
   comments: payload
@@ -127,6 +128,7 @@ class Comment extends PureComponent<Props, State> {
 
     return (
       <div className="comment">
+        {/* <Search /> */}
         <Editor
           deleteComment={deleteComment}
           updateComments={this.updateComments}

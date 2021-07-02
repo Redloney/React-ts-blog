@@ -1,5 +1,6 @@
 import axios from './axios'
 
+// 
 export const GetRandomAvatar = (gender: string | undefined) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -18,7 +19,7 @@ export const GetRandomAvatar = (gender: string | undefined) => {
     }
   })
 }
-
+// 验证用户存在
 export const ValidateUserExist = (validate: {}) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -29,7 +30,7 @@ export const ValidateUserExist = (validate: {}) => {
     }
   })
 }
-
+// 用户登录
 export const UserLogin = (userinfo: object) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -41,7 +42,7 @@ export const UserLogin = (userinfo: object) => {
     }
   })
 }
-
+// 用户注销
 export const UserLogout = () => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -52,7 +53,6 @@ export const UserLogout = () => {
     }
   })
 }
-
 // 腾讯地图api
 export const GetUserAddress = () => {
   return new Promise(async (resolve, reject) => {
