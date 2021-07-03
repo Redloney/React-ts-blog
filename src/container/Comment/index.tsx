@@ -61,12 +61,16 @@ class Comment extends PureComponent<Props, State> {
   getMore = async () => {
     try {
       const { size } = this.state
-      const { page, count } = this.props.comments
-      console.log(count)
+      const { page } = this.props.comments
       let { comments }: any = await GetComments(page + 1, size)
+      if (comments[0] === undefined) {
+        message.info('没有更多留言了~', 3)
+      }
       this.props.getComments({ page: page + 1, size, comments })
+      return false
     } catch (err) {
       console.warn(err)
+      return true
     }
   }
 

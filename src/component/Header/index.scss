@@ -32,13 +32,13 @@
 
 
     .nickname {
+      font-family: Marydale;
 
       a {
         text-decoration: none;
 
         h1 {
           margin: 0;
-          font-family: Marydale;
           letter-spacing: 8px;
           font-size: clamp(1.65rem, 2vw, 1.75rem);
           color: #fefefe;
@@ -51,12 +51,12 @@
 
     .faithful {
       margin: 30px 0;
-      font-family: SentyTEA;
       letter-spacing: 3px;
       font-size: clamp(25px, 1.35vw, 1.75vw);
       color: #fefefe;
       text-align: center;
       filter: drop-shadow(2.5px 2.5px 2px black);
+      font-family: SentyTEA;
     }
   }
 }

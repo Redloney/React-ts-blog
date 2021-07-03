@@ -46,6 +46,7 @@ interface State {
   textarea: string
   replyId: string
   commPosition: number
+  leaveMessageStatus: boolean
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -63,6 +64,7 @@ export default class Editor extends PureComponent<Props, State> {
     textarea: '',
     replyId: '',
     commPosition: 0,
+    leaveMessageStatus: false,
   }
 
   // 用户登录
@@ -112,6 +114,15 @@ export default class Editor extends PureComponent<Props, State> {
     })
   }
 
+  textAreaOnBlur = () => {
+    if (this.state.replyId) {
+      this.setState({
+        textarea: '',
+        replyId: '',
+      })
+    }
+  }
+
   // 表情输入框显示
   emojiBoxVisibleChange = () => {
     this.setState({
@@ -137,22 +148,34 @@ export default class Editor extends PureComponent<Props, State> {
     })
   }
 
+  changeLeaveMessageStatus = (leaveMessageStatus: boolean) => {
+    this.setState({
+      leaveMessageStatus,
+    })
+  }
+
   //留言
   leaveMessage = async () => {
+    this.changeLeaveMessageStatus(true)
     const content = this.state.textarea
     const replyId = this.state.replyId
     if (this.props.userinfo.isLogin) {
       if (!content) {
         message.warn('留言不可以为空哦！', 3)
         this.inputRef.current?.focus()
+        this.changeLeaveMessageStatus(false)
         return
       }
       if (content.length < 5) {
         message.warning(' 提交失败、再多写一点吧', 3)
+        this.changeLeaveMessageStatus(false)
+
         return
       }
       if (content.length > 300) {
         message.warning('提交失败、留言字数超出限制')
+        this.changeLeaveMessageStatus(false)
+
         return
       }
       // 留言接口
@@ -165,6 +188,7 @@ export default class Editor extends PureComponent<Props, State> {
         this.setState({ textarea: '', replyId: '', commPosition: 0 })
         this.props.updateComments()
       }
+      this.changeLeaveMessageStatus(false)
       return
     }
     message.info('Hi 陌生人 请先登录哦！', 3)
@@ -245,6 +269,7 @@ export default class Editor extends PureComponent<Props, State> {
               className="editor-input"
               placeholder="写下你的评论..."
               value={textarea}
+              onBlur={this.textAreaOnBlur}
               onChange={this.textAreaOnChange}
             />
             <div className="bottom">
@@ -272,15 +297,22 @@ export default class Editor extends PureComponent<Props, State> {
                 <span className="tips">Ctrl + Enter 发表</span>
               </div>
               <div className="btns">
-                <Popconfirm
+                {/* <Popconfirm
                   ref={this.PopRef}
                   title="确定要提交留言么？"
                   okText="是"
                   cancelText="否"
-                  onConfirm={this.leaveMessage}
+                  onConfirm={}
+                > */}
+                <Button
+                  className="submit"
+                  loading={this.state.leaveMessageStatus}
+                  onClick={this.leaveMessage}
                 >
-                  <Button className="submit"> 留言 </Button>
-                </Popconfirm>
+                  {' '}
+                  留言{' '}
+                </Button>
+                {/* </Popconfirm> */}
               </div>
             </div>
           </div>

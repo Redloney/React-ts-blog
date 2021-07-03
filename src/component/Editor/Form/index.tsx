@@ -29,6 +29,7 @@ interface State {
   timer: number
   nameExist: boolean
   emailExist: boolean
+  isLoading: boolean
 }
 
 class LoginForm extends PureComponent<Props, State> {
@@ -40,17 +41,26 @@ class LoginForm extends PureComponent<Props, State> {
     timer: 0,
     nameExist: false,
     emailExist: false,
+    isLoading: false,
   }
 
   FormRef: RefObject<FormInstance> = React.createRef()
 
+  setLodingStatus = (status: boolean) => {
+    this.setState({
+      isLoading: status,
+    })
+  }
+
   // 登录
   modalSubmit = () => {
+    this.setLodingStatus(true)
     this.FormRef.current?.submit()
   }
 
   // 取消
   modalCancel = () => {
+    this.setLodingStatus(false)
     this.props.setVisible(false)
     this.FormRef.current?.resetFields()
   }
@@ -58,12 +68,16 @@ class LoginForm extends PureComponent<Props, State> {
   // 请求登录接口
   submit = async (userinfo: UserInfo) => {
     if (await this.props.login(userinfo)) {
+      this.setLodingStatus(true)
       this.modalCancel()
     }
   }
 
   render() {
     const { visible } = this.props
+
+    const { isLoading } = this.state
+
     const { modalSubmit, modalCancel, submit } = this
 
     // Modal 配置参数
@@ -80,6 +94,7 @@ class LoginForm extends PureComponent<Props, State> {
       okType: 'default',
       onOk: modalSubmit,
       onCancel: modalCancel,
+      confirmLoading: isLoading,
     }
 
     return (

@@ -6,10 +6,9 @@ export const GetComments = (page: number = 0, size: number = 15, sorter: string 
     try {
       const { data } = await axios({
         method: "GET",
-        url: '/api/comment/list',
+        url: '/api/api/comment/list',
         params: { page, size, sorter, ...obj }
       })
-      console.log(data)
       data.code && data.count >= 1 ? resolve(data) : resolve([])
     } catch (err) {
       resolve([])
@@ -23,7 +22,7 @@ export const InsertComment = ({ content, replyId }: any) => {
     try {
       const { data } = await axios({
         method: "POST",
-        url: '/api/comment/insert',
+        url: '/api/api/comment/insert',
         data: { content, replyId }
       })
       data && data.code ? resolve(data) : resolve([])
@@ -38,7 +37,7 @@ export const ThumbComment = (id: string | undefined, fId: string, isThumb: boole
     try {
       const { data } = await axios({
         method: "POST",
-        url: '/api/comment/thumb',
+        url: '/api/api/comment/thumb',
         data: { id, fId, isThumb }
       })
       // data && data.code ? resolve(data) : resolve([])
@@ -54,7 +53,7 @@ export const ThumbComment = (id: string | undefined, fId: string, isThumb: boole
 export const DeleteComment = (fId: string, id: string) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { data } = await axios.post('/api/comment/delete', { fId, id })
+      const { data } = await axios.post('/api/api/comment/delete', { fId, id })
       data.code ? resolve(true) : resolve(false)
     } catch (err) {
       reject(err)

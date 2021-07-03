@@ -1,0 +1,13 @@
+.spin-loading {
+  display: block;
+  margin: 150px auto 300px;
+  color: #fff;
+
+  .ant-spin-dot {
+    margin-bottom: 25px;
+
+    .ant-spin-dot-item {
+      background-color: #fff;
+    }
+  }
+}

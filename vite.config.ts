@@ -18,9 +18,9 @@ export default defineConfig({
   server: {
     proxy: {
       '^/api': {
-        target: 'http://localhost:8082',
+        target: 'https://www.redloney.cn/api',
         changeOrigin: true,
-        // rewrite: path => path.replace(/^\/api/, '')
+        rewrite: path => path.replace(/^\/api/, '')
       },
       '^/map': {
         target: 'https://apis.map.qq.com/ws/location/v1/ip',

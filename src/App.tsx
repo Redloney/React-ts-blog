@@ -6,7 +6,7 @@ import './assets/styles/global.scss'
 
 import Header from './component/Header'
 import Footer from './component/Footer'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { HashRouter as Router } from 'react-router-dom'
 import View from './views/View'
 
 import Aos from 'aos'

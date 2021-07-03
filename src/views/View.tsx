@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import { Route, Switch } from 'react-router-dom'
+import Loading from '../component/Loading'
 
 import routers from '../routers'
 import './view.scss'
@@ -8,18 +9,20 @@ import './view.scss'
 const View = () => {
   return (
     <div className="view">
-      <Switch>
-        {routers.map(({ path, exact, component }, index) => {
-          return (
-            <Route
-              key={index}
-              path={path}
-              exact={exact}
-              component={component}
-            />
-          )
-        })}
-      </Switch>
+      <Suspense fallback={<Loading />}>
+        <Switch>
+          {routers.map(({ path, exact, component }, index) => {
+            return (
+              <Route
+                key={index}
+                path={path}
+                exact={exact}
+                component={component}
+              />
+            )
+          })}
+        </Switch>
+      </Suspense>
     </div>
   )
 }

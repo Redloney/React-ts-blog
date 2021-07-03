@@ -25,37 +25,51 @@ interface Props {
 
 interface State {
   isThumb: boolean
+  getMoreLoading: boolean
 }
 
 export default class Comments extends PureComponent<Props, State> {
+  // state
   state = {
     isThumb: false,
+    getMoreLoading: false,
   }
 
-  //删除评论
+  // 删除评论
   deleteComment = (fId: string | undefined, commId: string | undefined) => {
     this.props.deleteComment(fId, commId)
   }
 
-  // 回复
+  // 回复评论
   replyTo = (e: any, comm: Comment, _id: string | undefined) => {
     let screenY = document.documentElement.scrollTop
     this.props.replyTo(comm, _id, screenY)
   }
 
+  // 点赞评论
   thumbComment = (comm: Comment, _id: string | undefined) => {
     let isThumb = !this.state.isThumb
     this.props.thumbComment(comm, _id, isThumb)
   }
 
-  getMore = () => {
-    this.props.getMore()
+  changeLodingStatus = (getMoreLoading: boolean) => {
+    this.setState({
+      getMoreLoading,
+    })
+  }
+
+  // 获取评论
+  getMore = async () => {
+    this.changeLodingStatus(true)
+    this.changeLodingStatus(await this.props.getMore())
   }
 
   render() {
     const { _id } = this.props.userinfo
 
     const { comments } = this.props
+
+    const { getMoreLoading } = this.state
 
     const { deleteComment, thumbComment, replyTo, getMore } = this
 
@@ -66,9 +80,11 @@ export default class Comments extends PureComponent<Props, State> {
           onClick={() => thumbComment(Comm, fId)}
         >
           <i className="iconfont iconthumbs-up"></i>
-          {/* <span className="num">
-            {this.state.isThumb ? (Comm.thumbNum as any) + 1 : Comm.thumbNum}
-          </span> */}
+          {/* 
+            <span className="num">
+              {this.state.isThumb ? (Comm.thumbNum as any) + 1 : Comm.thumbNum}
+            </span>
+          */}
         </span>,
         <span className="reply" onClick={(e) => replyTo(e, Comm, fId)}>
           <i className="iconfont iconcomment"></i>
@@ -102,9 +118,14 @@ export default class Comments extends PureComponent<Props, State> {
         data-aos="fade-up"
         data-aos-duration={850}
         data-aos-easing="ease-in-out-back"
-        style={{ padding: '20px 0', textAlign: 'center' }}
+        style={{
+          padding: '20px 0',
+          textAlign: 'center',
+        }}
       >
-        <Button onClick={getMore}>更多留言</Button>
+        <Button type="text" onClick={getMore} loading={getMoreLoading}>
+          更多留言
+        </Button>
       </div>
     )
 

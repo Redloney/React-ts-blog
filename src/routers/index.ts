@@ -1,14 +1,24 @@
+import { lazy, LazyExoticComponent } from 'react'
 import { RouteConfig } from 'react-router-config'
 
 import Home from '../container/Home/Home'
 
-import Cv from '../container/Cv'
-import Blog from '../container/Blog'
-import Comment from '../container/Comment'
-import Detail from '../container/Blog/Detail'
-import NoMatch from '../container/NoMatch'
+// export interface RouteType extends RouteConfig {
+//   pathname: string;
+//   component: LazyExoticComponent<any>;
+//   exact: boolean;
+//   title?: string;
+//   icon?: string;
+//   children?: RouteType[];
+// }
 
-const routers: Array<RouteConfig> = [
+const Cv = lazy(() => import('../container/Cv'))
+// const Blog  = lazy(() => import( '../container/Blog'))
+const Comment = lazy(() => import('../container/Comment'))
+const Detail = lazy(() => import('../container/Blog/Detail'))
+const NoMatch = lazy(() => import('../container/NoMatch'))
+
+const routers = [
   {
     path: '/',
     component: Home,
@@ -19,11 +29,11 @@ const routers: Array<RouteConfig> = [
     exact: false,
     component: Cv,
   },
-  {
-    path: '/Blog',
-    exact: false,
-    component: Blog,
-  },
+  // {
+  //   path: '/Blog',
+  //   exact: false,
+  //   component: Blog,
+  // },
   {
     path: '/Comment',
     exact: false,
