@@ -1,6 +1,6 @@
 import axios from './axios'
 
-// 
+// 获取随机头像
 export const GetRandomAvatar = (gender: string | undefined) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -23,7 +23,7 @@ export const GetRandomAvatar = (gender: string | undefined) => {
 export const ValidateUserExist = (validate: {}) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { data } = await axios.post('/api/api/user/validate', validate)
+      const { data } = await axios.post('/api/user/validate', validate)
       data.code && data.count ? resolve(true) : resolve(false)
     } catch (err) {
       reject(err)
@@ -34,8 +34,7 @@ export const ValidateUserExist = (validate: {}) => {
 export const UserLogin = (userinfo: object) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log(userinfo)
-      const { data } = await axios.post('/api/api/user/login', { ...userinfo })
+      const { data } = await axios.post('/api/user/login', { ...userinfo })
       resolve(data)
     } catch (err) {
       reject(err)
@@ -46,8 +45,8 @@ export const UserLogin = (userinfo: object) => {
 export const UserLogout = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { data } = await axios.post('/api/api/user/logout')
-      resolve(data.code)
+      const { data } = await axios.post('/api/user/logout')
+      resolve(data)
     } catch (err) {
       reject(err)
     }

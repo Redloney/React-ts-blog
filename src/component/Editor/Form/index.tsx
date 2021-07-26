@@ -7,7 +7,7 @@ import { ModalProps } from 'antd/lib/modal'
 import { FormInstance } from 'antd/lib/form'
 
 // http api
-import { ValidateUserExist } from '../../../api/user'
+import { ValidateUserExist } from '../../../api/User'
 
 // types
 import { UserInfo } from '../../../types'

@@ -9,8 +9,9 @@ import {
   Popconfirm,
   Tooltip,
   Avatar,
+  message,
 } from 'antd'
-import { Children, Comment, UserInfo } from '../../types'
+import { ChildComm, Comment, UserInfo } from '../../types'
 
 import dayjs from '../../utils/day'
 
@@ -24,14 +25,12 @@ interface Props {
 }
 
 interface State {
-  isThumb: boolean
   getMoreLoading: boolean
 }
 
 export default class Comments extends PureComponent<Props, State> {
   // state
   state = {
-    isThumb: false,
     getMoreLoading: false,
   }
 
@@ -47,9 +46,16 @@ export default class Comments extends PureComponent<Props, State> {
   }
 
   // 点赞评论
-  thumbComment = (comm: Comment, _id: string | undefined) => {
-    let isThumb = !this.state.isThumb
-    this.props.thumbComment(comm, _id, isThumb)
+  thumbComment = (
+    comm: Comment,
+    _id: string | undefined,
+    like_status: number | undefined
+  ) => {
+    if (this.props.userinfo.isLogin) {
+      this.props.thumbComment(comm, _id, like_status)
+    } else {
+      message.warn('请您先登录哦~', 3)
+    }
   }
 
   changeLodingStatus = (getMoreLoading: boolean) => {
@@ -76,15 +82,11 @@ export default class Comments extends PureComponent<Props, State> {
     const extra = (Comm: Comment, fId: string | undefined) => {
       const extra = [
         <span
-          className={`thumb ${this.state.isThumb ? 'isThumb' : null}`}
-          onClick={() => thumbComment(Comm, fId)}
+          className={`thumb ${Comm.like_status ? 'isThumb' : null}`}
+          onClick={() => thumbComment(Comm, fId, Comm.like_status)}
         >
           <i className="iconfont iconthumbs-up"></i>
-          {/* 
-            <span className="num">
-              {this.state.isThumb ? (Comm.thumbNum as any) + 1 : Comm.thumbNum}
-            </span>
-          */}
+          <span className="num">{Comm.like_number}</span>
         </span>,
         <span className="reply" onClick={(e) => replyTo(e, Comm, fId)}>
           <i className="iconfont iconcomment"></i>
@@ -129,23 +131,26 @@ export default class Comments extends PureComponent<Props, State> {
       </div>
     )
 
-    // 评论摸版 ---> 未来抽离
+    // 评论摸版
     const comment = (
       Comm: Comment,
       fId: string | undefined,
-      chilComm?: Array<Children> | undefined
+      chilComm?: Array<ChildComm> | undefined
     ) => {
       const { userinfo, content, createdAt } = Comm
+
       const { nickname, weburl, avatar } = userinfo
 
-      const date = dayjs(createdAt).fromNow()
+      // 评论时间
+      const date = createdAt ? dayjs(createdAt).fromNow() : 'unknow'
 
       const DateTime = (
-        <Tooltip title={date}>
+        <Tooltip title={`评论时间 ${date}`}>
           <span>{date}</span>
         </Tooltip>
       )
 
+      // 用户头像
       const UserAvatar = !weburl ? (
         <Avatar src={avatar} style={{ cursor: 'default' }}>
           {nickname?.substr(0, 1).toUpperCase()}
@@ -163,6 +168,7 @@ export default class Comments extends PureComponent<Props, State> {
         </a>
       )
 
+      // 评论内容
       const Content = (
         <div
           className="content"
@@ -182,9 +188,7 @@ export default class Comments extends PureComponent<Props, State> {
           datetime={DateTime}
         >
           {chilComm
-            ? chilComm.map((_Comm, _index) => {
-                return comment(_Comm, fId)
-              })
+            ? chilComm.map((_Comm, _index) => comment(_Comm, fId))
             : null}
         </AntComment>
       )

@@ -17,8 +17,13 @@ export default defineConfig({
   ],
   server: {
     proxy: {
+      // '^/api': {
+      //   target: 'https://www.redloney.cn/api',
+      //   changeOrigin: true,
+      //   rewrite: path => path.replace(/^\/api/, '')
+      // },
       '^/api': {
-        target: 'https://www.redloney.cn/api',
+        target: 'http://localhost:8088/api',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '')
       },

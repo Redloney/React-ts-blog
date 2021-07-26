@@ -11,13 +11,18 @@ import { message } from 'antd'
 // redux
 import { connect } from 'react-redux'
 import { login, logout } from '../../store/actions/userinfo'
-import { getComments, payload } from '../../store/actions/comments'
+import { getComments, setComment, payload } from '../../store/actions/comments'
 import { UserInfo, Comment as IComment } from '../../types'
 
 // http api
-import { DeleteComment, GetComments } from '../../api/comm'
-import { GetRandomAvatar, GetUserAddress, UserLogin } from '../../api/user'
-import { Search } from '../../component/Search'
+import { DeleteComment, GetComments } from '../../api/Comment'
+import {
+  GetRandomAvatar,
+  GetUserAddress,
+  UserLogin,
+  UserLogout,
+} from '../../api/user'
+import { UserLike } from '../../api/LikeRecord'
 
 interface Props {
   comments: any
@@ -25,6 +30,7 @@ interface Props {
   login: Function
   logout: Function
   getComments: Function
+  setComment: Function
 }
 
 interface State {
@@ -32,7 +38,12 @@ interface State {
 }
 
 // @ts-ignore
-@connect((state) => state, { login, logout, getComments })
+@connect((state) => state, {
+  login,
+  logout,
+  getComments,
+  setComment,
+})
 class Comment extends PureComponent<Props, State> {
   state: State = {
     size: 15,
@@ -56,7 +67,12 @@ class Comment extends PureComponent<Props, State> {
     }
   }
 
-  thumbComment = () => {}
+  thumbComment = async (comm: any, _id: string, like_status: number) => {
+    // message.info('点赞成功！', 3)
+    this.props.setComment({ comm_id: comm._id, _id, like_status })
+    const ret = await UserLike(comm._id)
+    console.log(ret)
+  }
 
   getMore = async () => {
     try {
@@ -78,14 +94,15 @@ class Comment extends PureComponent<Props, State> {
   login = async (userinfo: UserInfo) => {
     try {
       // 用户地址
-      let address = await GetUserAddress()
+      let { result } = (await GetUserAddress()) as any
+      // 随机头像
       let { imgurl: avatar } = (await GetRandomAvatar(userinfo.gender)) as any
       // 用户信息
       let {
         data: user,
         msg,
         code,
-      }: any = await UserLogin({ ...userinfo, avatar, address })
+      }: any = await UserLogin({ ...userinfo, avatar, address: result })
       if (user && code) {
         storage.set('userinfo', user)
         this.props.login(user)
@@ -103,12 +120,12 @@ class Comment extends PureComponent<Props, State> {
   }
 
   // 注销
-  logout = () => {
+  logout = async () => {
     try {
       this.props.logout()
-      return true
+      const { code } = (await UserLogout()) as any
+      return code ? true : false
     } catch (err) {
-      console.log(err)
       return false
     }
   }

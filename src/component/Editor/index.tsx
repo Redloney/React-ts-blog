@@ -15,7 +15,9 @@ import './editor.scss'
 import LoginForm from './Form'
 import { UserInfo, Comment as IComment } from '../../types'
 import { TextAreaRef } from 'antd/lib/input/TextArea'
-import { InsertComment, ThumbComment } from '../../api/comm'
+import { InsertComment } from '../../api/Comment'
+
+import axios from '../../api/axios'
 
 // 参数接口
 interface Props {
@@ -75,17 +77,14 @@ export default class Editor extends PureComponent<Props, State> {
   // 用户登出
   logout = async () => {
     if (await this.props.logout()) {
-      message.info('已注销登录，欢迎下次再来！')
+      message.info('已注销登录，欢迎下次再来！', 3)
       return
     }
-    console.warn('注销错误！')
+    console.warn('注销失败,未知错误！', 3)
   }
 
-  thumbComment = (comm: IComment, fId: string, isThumb: boolean) => {
-    // ThumbComment(comm._id, fId, isThumb).then((res) => {
-    //   console.log(res)
-    // })
-    message.info('点赞功能暂未开放！', 3)
+  thumbComment = (comm: IComment, fId: string, like_status: number) => {
+    this.props.thumbComment(comm, fId, like_status)
   }
 
   replyTo = (comm: IComment, _id: string, screenY: number) => {

@@ -10,6 +10,10 @@ export type DEL_UPSERINFO_TYPE = typeof DEL_USERINFO
 export const GET_COMMENTS = 'GET_COMMENTS'
 export type GET_COMMENTS_TYPE = typeof GET_COMMENTS
 
+// 设置留言信息
+export const SET_COMMENT = 'SET_COMMENTS'
+export type SET_COMMENT_TYPE = typeof SET_COMMENT
+
 // 清除留言列表
 export const CLEAR_COMMENTS = 'CLEAR_COMMENTS'
 export type CLEAR_COMMENTS_TYPE = typeof CLEAR_COMMENTS
