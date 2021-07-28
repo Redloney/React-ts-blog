@@ -7,10 +7,13 @@ import { ModalProps } from 'antd/lib/modal'
 import { FormInstance } from 'antd/lib/form'
 
 // http api
-import { ValidateUserExist } from '../../../api/User'
+import { ValidateUserExist } from '../../../api/user'
 
 // types
 import { UserInfo } from '../../../types'
+import Avatar from 'antd/lib/avatar/avatar'
+
+import AvatarUpload from '../../upload'
 
 // props interface
 interface Props {
@@ -101,6 +104,11 @@ class LoginForm extends PureComponent<Props, State> {
       <Modal className="loginModal" {...ModalParams}>
         <Form name="loginForm" onFinish={submit} ref={this.FormRef}>
           <Row>
+            {/* <Col span={24}>
+              <Form.Item>
+                <AvatarUpload />
+              </Form.Item>
+            </Col> */}
             <Col span={12} xs={10} sm={10} md={10} lg={10} xl={10} xxl={10}>
               <Form.Item>昵称(必填)</Form.Item>
               <Form.Item

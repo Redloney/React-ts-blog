@@ -40,7 +40,7 @@ export default class Comments extends PureComponent<Props, State> {
   }
 
   // 回复评论
-  replyTo = (e: any, comm: Comment, _id: string | undefined) => {
+  replyTo = (comm: Comment, _id: string | undefined) => {
     let screenY = document.documentElement.scrollTop
     this.props.replyTo(comm, _id, screenY)
   }
@@ -88,7 +88,7 @@ export default class Comments extends PureComponent<Props, State> {
           <i className="iconfont iconthumbs-up"></i>
           <span className="num">{Comm.like_number}</span>
         </span>,
-        <span className="reply" onClick={(e) => replyTo(e, Comm, fId)}>
+        <span className="reply" onClick={() => replyTo(Comm, fId)}>
           <i className="iconfont iconcomment"></i>
           {/* <span className="num">{Comm.commNum}</span> */}
         </span>,

@@ -16,7 +16,7 @@ interface State {
 
 export default class AvatarUpload extends PureComponent<Props, State> {
   state: State = {
-    imgurl: '',
+    imgurl: 'src/component/upload/add.png',
   }
 
   // 限制图片的格式，size，分辨率
@@ -86,10 +86,12 @@ export default class AvatarUpload extends PureComponent<Props, State> {
       modalCancel: '取消',
     }
 
+    const mask = <div className="mask"></div>
+
     return (
       <ImgCrop shape="round" fillColor="red" {...imgCropParam}>
         <Upload {...uploadParam}>
-          <Avatar src={imgurl} size={120} />
+          <Avatar src={imgurl} size={80} />
         </Upload>
       </ImgCrop>
     )

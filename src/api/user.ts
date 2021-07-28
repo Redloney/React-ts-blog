@@ -1,10 +1,23 @@
 import axios from './axios'
 
 // 获取随机头像
-export const GetRandomAvatar = (gender: string | undefined) => {
+export const GetRandomAvatar = (gender: string | undefined, type?: string) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let lx = gender === 'male' ? 'a1' : 'b1'
+      const mail = [
+        // a1（男头）
+        "a1",
+        // c3（动漫男头）
+        "c3",
+      ]
+      const femail = [
+        // b1（女头）
+        "b1",
+        // c2（动漫女头）
+        "c2",
+      ]
+      let key = Math.floor((Math.random() * 2) + 1);
+      let lx = gender === 'male' ? mail[key] : femail[key]
       const { data } = await axios({
         method: "GET",
         url: '/avatar',
@@ -14,6 +27,7 @@ export const GetRandomAvatar = (gender: string | undefined) => {
         }
       })
       data.code ? resolve(data) : resolve({})
+      resolve({})
     } catch (err) {
       reject(err)
     }
@@ -34,7 +48,9 @@ export const ValidateUserExist = (validate: {}) => {
 export const UserLogin = (userinfo: object) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log(userinfo)
       const { data } = await axios.post('/api/user/login', { ...userinfo })
+      console.log(data)
       resolve(data)
     } catch (err) {
       reject(err)

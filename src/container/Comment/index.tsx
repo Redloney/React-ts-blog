@@ -94,24 +94,21 @@ class Comment extends PureComponent<Props, State> {
   login = async (userinfo: UserInfo) => {
     try {
       // 用户地址
-      let { result } = (await GetUserAddress()) as any
+      let { result: address } = (await GetUserAddress()) as any
       // 随机头像
       let { imgurl: avatar } = (await GetRandomAvatar(userinfo.gender)) as any
       // 用户信息
-      let {
-        data: user,
-        msg,
-        code,
-      }: any = await UserLogin({ ...userinfo, avatar, address: result })
-      if (user && code) {
-        storage.set('userinfo', user)
-        this.props.login(user)
+      let ret: any = await UserLogin({ ...userinfo, avatar, address })
+      if (ret.code && ret.token) {
+        storage.set('token', ret.token)
+        this.props.login(userinfo)
+        storage.set('userinfo', userinfo)
         message.destroy()
-        message.success('欢迎你! ' + user.nickname, 3)
+        message.success('欢迎你! ' + userinfo.nickname, 3)
         return true
       } else {
         message.destroy()
-        message.warn('登录失败! ' + msg, 3)
+        message.warn('登录失败! ' + ret.msg, 3)
         return false
       }
     } catch (err) {
