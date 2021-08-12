@@ -35,3 +35,13 @@ export type Comment = {
   updatedAt?: string,
   children?: Array<ChildComm> | undefined, // 子评论
 }
+
+export type Address = {
+  message: String,
+  result: {
+    ad_info: Object,
+    ip: String,
+    location: Object
+  },
+  status: Number
+}

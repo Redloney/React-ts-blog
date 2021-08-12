@@ -1,7 +1,14 @@
 import axios from './axios'
 
+type Avatar = {
+  code: Number,
+  Height: Number,
+  imgUrl: String,
+  width: Number
+}
+
 // 获取随机头像
-export const GetRandomAvatar = (gender: string | undefined, type?: string) => {
+export const GetRandomAvatar = (gender: string | undefined, type?: string): Promise<Avatar | null> => {
   return new Promise(async (resolve, reject) => {
     try {
       const mail = [
@@ -26,8 +33,7 @@ export const GetRandomAvatar = (gender: string | undefined, type?: string) => {
           format: 'json'
         }
       })
-      data.code ? resolve(data) : resolve({})
-      resolve({})
+      data.code ? resolve(data) : resolve(null)
     } catch (err) {
       reject(err)
     }
@@ -45,12 +51,21 @@ export const ValidateUserExist = (validate: {}) => {
   })
 }
 // 用户登录
-export const UserLogin = (userinfo: object) => {
+export const UserLogin = (userinfo: object): Promise<{ code: Number, token: String, msg: String, warn: String }> => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log(userinfo)
       const { data } = await axios.post('/api/user/login', { ...userinfo })
-      console.log(data)
+      resolve(data)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+// 获取授权
+export const UserAuthentication = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { data } = await axios.post('/api/user/auth')
       resolve(data)
     } catch (err) {
       reject(err)
@@ -68,8 +83,28 @@ export const UserLogout = () => {
     }
   })
 }
+
+type address = {
+  message: String,
+  result: {
+    ad_info: {
+      adcode: Number
+      city: String
+      district: String
+      nation: String
+      province: String
+    },
+    ip: String,
+    location: {
+      lat: Number,
+      lng: Number
+    }
+  },
+  status: Number
+}
+
 // 腾讯地图api
-export const GetUserAddress = () => {
+export const GetUserAddress = (): Promise<address | null> => {
   return new Promise(async (resolve, reject) => {
     try {
       let { data } = await axios({
@@ -79,7 +114,7 @@ export const GetUserAddress = () => {
           key: 'S6SBZ-I7LWR-JVPWP-W7SJK-OWEDT-GFBJS'
         }
       })
-      data ? resolve(data) : resolve({})
+      data ? resolve(data) : resolve(null)
     } catch (err) {
       reject(err)
     }
