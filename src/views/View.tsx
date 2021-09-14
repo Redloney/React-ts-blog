@@ -6,6 +6,8 @@ import Loading from '../component/Loading'
 import routers from '../routers'
 import './view.scss'
 
+import MusicPlayer from '../component/music/music'
+
 const View = () => {
   return (
     <div className="view">
@@ -23,6 +25,7 @@ const View = () => {
           })}
         </Switch>
       </Suspense>
+      <MusicPlayer />
     </div>
   )
 }

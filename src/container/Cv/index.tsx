@@ -10,7 +10,7 @@ const Cv = () => {
   }, [])
 
   return (
-    <main className="cv">
+    <main className="cv" data-aos="fade-up" data-aos-duration="850">
       <section className="section">
         <h2 className="title">个人信息</h2>
         <Row>

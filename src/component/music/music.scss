@@ -1,0 +1,31 @@
+.player.isPlay {
+  animation-play-state: running;
+}
+
+.player {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: rotate 3s linear infinite;
+  animation-play-state: paused;
+  cursor: pointer;
+
+  .img {
+    width: 100%;
+  }
+
+  .audio {
+    display: none;
+  }
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(365deg);
+  }
+}

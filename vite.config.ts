@@ -13,7 +13,7 @@ export default defineConfig({
           style: (name) => `antd/es/${name}/style`,
         },
       ],
-    })
+    }),
   ],
   server: {
     proxy: {
@@ -23,21 +23,21 @@ export default defineConfig({
       //   rewrite: path => path.replace(/^\/api/, '')
       // },
       '^/api': {
-        target: 'http://localhost:8088/api',
+        target: 'http://localhost:8088',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '^/map': {
         target: 'https://apis.map.qq.com/ws/location/v1/ip',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/map/, '')
+        rewrite: (path) => path.replace(/^\/map/, ''),
       },
       '^/avatar': {
         target: 'http://api.btstu.cn/sjtx/api.php',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/avatar/, '')
-      }
-    }
+        rewrite: (path) => path.replace(/^\/avatar/, ''),
+      },
+    },
   },
   css: {
     preprocessorOptions: {
@@ -46,12 +46,12 @@ export default defineConfig({
       },
       less: {
         javascriptEnabled: true,
-      }
-    }
+      },
+    },
   },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
-    }
+    },
   },
 })

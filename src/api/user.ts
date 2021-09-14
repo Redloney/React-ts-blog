@@ -1,38 +1,19 @@
 import axios from './axios'
 
-type Avatar = {
-  code: Number,
-  Height: Number,
-  imgUrl: String,
-  width: Number
-}
-
 // 获取随机头像
-export const GetRandomAvatar = (gender: string | undefined, type?: string): Promise<Avatar | null> => {
+export const GetRandomAvatar = (gender: string | undefined) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const mail = [
-        // a1（男头）
-        "a1",
-        // c3（动漫男头）
-        "c3",
-      ]
-      const femail = [
-        // b1（女头）
-        "b1",
-        // c2（动漫女头）
-        "c2",
-      ]
-      let key = Math.floor((Math.random() * 2) + 1);
-      let lx = gender === 'male' ? mail[key] : femail[key]
+      let lx = gender === 'male' ? 'a1' : 'b1'
       const { data } = await axios({
-        method: "GET",
+        method: 'GET',
         url: '/avatar',
         params: {
           lx,
-          format: 'json'
-        }
+          format: 'json',
+        },
       })
+      console.log(data)
       data.code ? resolve(data) : resolve(null)
     } catch (err) {
       reject(err)
@@ -51,7 +32,9 @@ export const ValidateUserExist = (validate: {}) => {
   })
 }
 // 用户登录
-export const UserLogin = (userinfo: object): Promise<{ code: Number, token: String, msg: String, warn: String }> => {
+export const UserLogin = (
+  userinfo: object
+): Promise<{ code: Number; token: String; msg: String; warn: String }> => {
   return new Promise(async (resolve, reject) => {
     try {
       const { data } = await axios.post('/api/user/login', { ...userinfo })
@@ -85,7 +68,7 @@ export const UserLogout = () => {
 }
 
 type address = {
-  message: String,
+  message: String
   result: {
     ad_info: {
       adcode: Number
@@ -93,13 +76,13 @@ type address = {
       district: String
       nation: String
       province: String
-    },
-    ip: String,
+    }
+    ip: String
     location: {
-      lat: Number,
+      lat: Number
       lng: Number
     }
-  },
+  }
   status: Number
 }
 
@@ -109,10 +92,10 @@ export const GetUserAddress = (): Promise<address | null> => {
     try {
       let { data } = await axios({
         url: '/map',
-        method: "GET",
+        method: 'GET',
         params: {
-          key: 'S6SBZ-I7LWR-JVPWP-W7SJK-OWEDT-GFBJS'
-        }
+          key: 'S6SBZ-I7LWR-JVPWP-W7SJK-OWEDT-GFBJS',
+        },
       })
       data ? resolve(data) : resolve(null)
     } catch (err) {

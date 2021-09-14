@@ -1,38 +1,62 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './blog.scss'
-
-import { Card } from '../../component/Card'
-
-// import { Home } from './Home'
-
-import img from '../../assets/image/4.png'
+import { Link } from 'react-router-dom'
+import { Skeleton } from 'antd'
+import { getArtList } from '../../api/Article'
+import dayjs from 'dayjs'
+import lodash from 'lodash'
+import TimeLine from '../../component/TimeLine'
 
 const Blog = () => {
-  const obj = {
-    id: 'a2',
-    imgUrl: img,
-    title: '如何提升技术等级',
-    tag: 'IT技术',
-    createAt: '2021.6.23',
-    author: 'redlonely',
+  const [artList, setArtList] = useState([])
+
+  const syncArtList = async () => {
+    const list: any = await getArtList()
+    list.forEach((el: any) => {
+      el.updatedAt = dayjs(el.updatedAt).format('YYYY-MM-DD')
+    })
+    setArtList(list)
   }
+
+  useEffect(() => {
+    syncArtList()
+  }, [])
+
+  const none = [<Skeleton active />, <Skeleton active />, <Skeleton active />]
 
   return (
     <div className="blog">
-      {/* <ul className="tags">
-        <li className="tag">主页</li>
-        <li className="tag">标签</li>
-        <li className="tag">归档</li>
-        <li className="tag">生活</li>
-        <li className="tag">关于</li>
-      </ul>
-      <Home /> */}
-      <Card {...obj} />
-      <Card {...obj} />
-      <Card {...obj} />
-      <Card {...obj} />
-      <Card {...obj} />
-      <Card {...obj} />
+      <TimeLine />
+      {/* {!lodash.isEmpty(artList)
+        ? artList.map((art: any) => {
+            return (
+              <article
+                key={art._id}
+                className="article"
+                data-aos="fade-up"
+                data-aos-duration="850"
+              >
+                <div className="doots"></div>
+                <Link className="date" to={'/detail/' + art._id}>
+                  <span className="trig"></span>
+                  <span className="dates">{art.updatedAt}</span>
+                </Link>
+                <div className="container">
+                  <div className="line"></div>
+                  <div className="content">
+                    <Link to={'/detail/' + art._id} className="title">
+                      {art.title}
+                    </Link>
+                    <div className="cover">
+                      <img src={art.cover} alt="art cover" />
+                    </div>
+                    <p className="desc">{art.desc}</p>
+                  </div>
+                </div>
+              </article>
+            )
+          })
+        : none} */}
     </div>
   )
 }

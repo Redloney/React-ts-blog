@@ -1,0 +1,108 @@
+.card {
+  position: relative;
+  max-width: 300px;
+  margin: 30px 10px;
+  padding: 20px 15px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 0 5px 200px rgba(0, 0, 0, 0.5);
+  transition: .5s ease-in-out;
+
+  &:hover {
+    transition: .5s ease-in-out;
+
+    .cover-picture {
+      transform: translateX(-50%)translateY(0%);
+      transition: 300ms ease-in-out;
+    }
+
+    .content {
+      transform: translateY(0%);
+      cursor: pointer;
+      visibility: visible;
+      opacity: 1;
+      transition: 300ms ease-in-out;
+
+      .desc {
+        transition: .3s ease-in-out;
+      }
+    }
+  }
+
+  .cover-picture {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%)translateY(-40%);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transition: 300ms ease-in-out;
+
+    img {
+      max-width: 100%;
+      border-radius: 4px;
+    }
+  }
+
+  .content {
+    position: relative;
+    padding: 10px 15px;
+    text-align: center;
+    color: #111;
+    transform: translateY(-20%);
+    transition: .3s ease-in-out;
+
+    .title {
+      width: 100%;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      text-transform: uppercase;
+      text-overflow: ellipsis;
+      color: #333;
+      position: relative;
+
+      &::before,
+      &::after {
+        content: '';
+        width: 2em;
+        height: 2px;
+        background-color: #333;
+        display: block;
+        position: absolute;
+        top: 50%;
+
+      }
+
+      &::before {
+        left: 1em;
+      }
+
+      &::after {
+        right: 1em;
+      }
+    }
+
+    .desc {
+      text-indent: 2em;
+    }
+
+    .date {
+      display: inline-block;
+      margin: 5px 0;
+      padding: 0 10px;
+      color: #333;
+      transition: 300ms ease-in-out;
+    }
+
+    .more {
+      background-color: #333;
+      padding: 5px 10px;
+      color: #fff;
+      transition: 300ms ease-in-out;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+  }
+}

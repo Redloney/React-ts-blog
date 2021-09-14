@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { RefObject } from 'react'
 
 import './index.scss'
 
@@ -34,7 +34,7 @@ const Header = () => {
             <Avatar src={avatar} size={120} />
           </Link>
         </div>
-        <div className="nickname">
+        <div className="nickname font">
           <Link to="/">
             <h1>Redloney</h1>
           </Link>

@@ -2,12 +2,12 @@
 
 @font-face {
   font-family: Marydale;
-  src: url('./font/font-spider/Marydale.ttf');
+  src: url('./font/Marydale.ttf');
 }
 
 @font-face {
   font-family: SentyTEA;
-  src: url('./font/font-spider/SentyTEA.ttf');
+  src: url('./font/SentyTEA.ttf');
 }
 
 @import url('./reset.scss');
@@ -15,21 +15,19 @@
 .App {
   width: 100%;
   min-height: 100vh;
-  // background-color: #333;
   overflow: hidden;
-  background: #16222A;
+  background: #4CA1AF;
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(to bottom, #3A6073, #16222A);
+  background: -webkit-linear-gradient(to bottom, #006273, #00697b, #4CA1AF);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #3A6073, #16222A);
+  background: linear-gradient(to bottom, #006273, #00697b, #4CA1AF);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
 }
 
 body {
   &::-webkit-scrollbar {
     /*滚动条整体样式*/
-    width: 15px;
+    width: 10px;
     /*高宽分别对应横竖滚动条的尺寸*/
     height: 1px;
     background-color: transparent;

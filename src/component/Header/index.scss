@@ -2,11 +2,19 @@
   margin-top: 5rem;
   color: #fff;
 
+  * {
+    &::selection {
+      background-color: deepskyblue;
+    }
+  }
+
   .wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+
 
     .avatar {
       padding: 30px 0;

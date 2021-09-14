@@ -2,32 +2,40 @@ import React, { PureComponent } from 'react'
 
 import './detail.scss'
 
-interface Props { }
+interface Props {}
 
-interface State { }
+interface State {}
 
+import { getArtDetail } from '../../../api/Article'
+import dayjs from 'dayjs'
 
-import art from './data.json'
+// import art from './data.json'
 
 export default class Detail extends PureComponent<Props, State> {
+  state = {
+    art: {},
+  }
+
+  componentDidMount() {
+    let id = (this.props as any).match.params.id
+    getArtDetail(id).then((art) => {
+      art.createdAt = dayjs(art.createdAt).format('YYYY-MM-DD HH:mm')
+      this.setState({
+        art: { ...art },
+      })
+    })
+  }
 
   render() {
-
-    const getContent = () => {
-      return { __html: art.content }
-    }
-
+    const art: any = this.state.art
     return (
-      <article className='art_detail'>
-        <div className="art_info">
-          <h1>{art.title}</h1>
-          <img src={art.pics[0]} className="art_pic" />
-          <h3>{art.desc}</h3>
-        </div>
-        <div className="art_body" dangerouslySetInnerHTML={getContent()}></div>
-        <div className="art_foot">
-          点击数:213 | {art.createtime}
-        </div>
+      <article className="art_detail font">
+        <h1 className="title font">{art.title}</h1>
+        <h2 className="date font">{art.createdAt}</h2>
+        <div
+          className="art_content font"
+          dangerouslySetInnerHTML={{ __html: art.html }}
+        ></div>
       </article>
     )
   }

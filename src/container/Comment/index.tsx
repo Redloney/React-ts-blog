@@ -13,12 +13,14 @@ import { connect } from 'react-redux'
 import { login, logout } from '../../store/actions/userinfo'
 import { getComments, setComment, payload } from '../../store/actions/comments'
 import { UserInfo, Comment as IComment } from '../../types'
+import lodash from 'lodash'
 
 // http api
 import { DeleteComment, GetComments } from '../../api/Comment'
 import {
   GetRandomAvatar,
   GetUserAddress,
+  UserAuthentication,
   UserLogin,
   UserLogout,
 } from '../../api/user'
@@ -54,6 +56,23 @@ class Comment extends PureComponent<Props, State> {
     //   ? (document.documentElement.scrollTop = 0)
     //   : null
     this.updateComments()
+    // 自动登录
+    if (!lodash.isEmpty(storage.get('token'))) {
+      UserAuthentication().then((res: any) => {
+        if (res.code && res.payload) {
+          let userinfo = res.payload
+          // 存 Redux
+          this.props.login(userinfo)
+          storage.set('userinfo', userinfo)
+          message.success('欢迎你! ' + userinfo.nickname, 3)
+        } else {
+          UserLogout()
+          storage.del('userinfo')
+          storage.del('token')
+          message.success('登录过期，请重新登录! ', 3)
+        }
+      })
+    }
   }
 
   updateComments = async () => {
@@ -96,7 +115,7 @@ class Comment extends PureComponent<Props, State> {
       // 用户地址
       const address = (await GetUserAddress())?.result
       // 随机头像
-      const avatar = (await GetRandomAvatar(userinfo.gender))?.imgUrl
+      const avatar = ((await GetRandomAvatar(userinfo.gender)) as any).imgurl
       // 用户信息
       let { code, msg, token } = await UserLogin({
         ...userinfo,

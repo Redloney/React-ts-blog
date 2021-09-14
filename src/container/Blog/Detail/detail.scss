@@ -1,8 +1,35 @@
 .art_detail {
-  background-color: #eee;
+  max-width: 800px;
+  margin: auto;
   padding: 15px;
   border-radius: 10px;
-  color: #333;
   display: flex;
   flex-direction: column;
+  background-color: #fff;
+
+  .title {
+    color: #111;
+    font-size: 18px;
+    margin: 15px 0;
+    letter-spacing: 2px;
+    text-align: center;
+    font-family: 'SourceHanSans';
+  }
+
+  .date {
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+  }
+
+  .art_content {
+    margin: 15px 0;
+
+    * {
+      &::selection {
+        color: #fff;
+        background-color: deepskyblue;
+      }
+    }
+  }
 }
