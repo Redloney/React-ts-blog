@@ -18,14 +18,21 @@
     padding: 15px;
     align-items: center;
     user-select: none;
+    align-items: baseline;
 
     h1 {
       font-size: 20px;
       font-weight: bold;
       margin-right: 15px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       color: rgba(0, 0, 0, 0.45);
       font-size: 14px;
       overflow: hidden;
@@ -35,6 +42,9 @@
 
     .loginBtns {
       margin-left: auto;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
@@ -82,11 +92,14 @@
         display: flex;
         align-items: center;
 
-        >span {
+        .tips {
+          width: 150px;
           display: flex;
           align-items: center;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
-
 
         .iconfont {
           display: flex;

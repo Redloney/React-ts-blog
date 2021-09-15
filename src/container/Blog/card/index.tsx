@@ -4,7 +4,12 @@ interface Props {}
 
 export const index = (props: Props) => {
   return (
-    <section className="card">
+    <section
+      data-aos="fade-up"
+      data-aos-duration={850}
+      data-aos-easing="ease-in-out-back"
+      className="card"
+    >
       <div className="cover-picture">
         <img src="https://redspite.com/uploads/1587475670795.jpg" />
       </div>

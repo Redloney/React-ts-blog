@@ -7,13 +7,10 @@ import { ModalProps } from 'antd/lib/modal'
 import { FormInstance } from 'antd/lib/form'
 
 // http api
-import { ValidateUserExist } from '../../../api/user'
+import { ValidateUserExist } from '../../../api/User'
 
 // types
 import { UserInfo } from '../../../types'
-import Avatar from 'antd/lib/avatar/avatar'
-
-import AvatarUpload from '../../upload'
 
 // props interface
 interface Props {
@@ -57,7 +54,6 @@ class LoginForm extends PureComponent<Props, State> {
 
   // 登录
   modalSubmit = () => {
-    this.setLodingStatus(true)
     this.FormRef.current?.submit()
   }
 
@@ -70,10 +66,13 @@ class LoginForm extends PureComponent<Props, State> {
 
   // 请求登录接口
   submit = async (userinfo: UserInfo) => {
-    if (await this.props.login(userinfo)) {
+    this.setLodingStatus(true)
+    const isLogin = await this.props.login(userinfo)
+    if (isLogin) {
       this.setLodingStatus(true)
       this.modalCancel()
     }
+    this.setLodingStatus(false)
   }
 
   render() {

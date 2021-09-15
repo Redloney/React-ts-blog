@@ -23,8 +23,8 @@ import {
   UserAuthentication,
   UserLogin,
   UserLogout,
-} from '../../api/user'
-import { UserLike } from '../../api/LikeRecord'
+} from '../../api/User'
+// import { UserLike } from '../../api/LikeRecord'
 
 interface Props {
   comments: any
@@ -52,11 +52,15 @@ class Comment extends PureComponent<Props, State> {
   }
   // 组件挂载
   componentDidMount() {
+    this.autoLogin()
     // document && document.documentElement
     //   ? (document.documentElement.scrollTop = 0)
     //   : null
     this.updateComments()
     // 自动登录
+  }
+
+  autoLogin = () => {
     if (!lodash.isEmpty(storage.get('token'))) {
       UserAuthentication().then((res: any) => {
         if (res.code && res.payload) {
@@ -87,10 +91,10 @@ class Comment extends PureComponent<Props, State> {
   }
 
   thumbComment = async (comm: any, _id: string, like_status: number) => {
-    // message.info('点赞成功！', 3)
-    this.props.setComment({ comm_id: comm._id, _id, like_status })
-    const ret = await UserLike(comm._id)
-    console.log(ret)
+    message.info('点赞功能暂未开放！', 1)
+    // this.props.setComment({ comm_id: comm._id, _id, like_status })
+    // const ret = await UserLike(comm._id)
+    // console.log(ret)
   }
 
   getMore = async () => {

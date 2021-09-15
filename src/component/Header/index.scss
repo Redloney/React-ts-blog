@@ -1,3 +1,29 @@
+@media screen and (max-width:540px) {
+  header.header {
+    margin: 0;
+
+    .wrapper {
+      .avatar {
+        margin-top: 5vh;
+      }
+
+      .nickname {
+        margin-top: 5vh;
+        letter-spacing: 0;
+        padding: 5px 20px;
+        background-color: #4087a93b;
+        color: #fff;
+      }
+
+      .faithful {
+        letter-spacing: none;
+        white-space: nowrap;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
 .header {
   margin-top: 5rem;
   color: #fff;
@@ -49,6 +75,7 @@
           margin: 0;
           letter-spacing: 8px;
           font-size: clamp(1.65rem, 2vw, 1.75rem);
+          font-size: 1.65rem;
           color: #fefefe;
           text-align: center;
           filter: drop-shadow(2.5px 2.5px 2px black);

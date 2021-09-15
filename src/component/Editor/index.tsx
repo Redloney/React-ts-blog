@@ -191,6 +191,7 @@ export default class Editor extends PureComponent<Props, State> {
       return
     }
     message.info('Hi 陌生人 请先登录哦！', 3)
+    this.changeLeaveMessageStatus(false)
   }
 
   render() {

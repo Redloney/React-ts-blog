@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { GetRandomAvatar } from '../../api/user'
+import { GetRandomAvatar } from '../../api/User'
 
 interface IProps {
   id: string

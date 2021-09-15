@@ -1,11 +1,10 @@
 .view {
   margin: auto;
   max-width: 1200px;
-  width: clamp(400px, 80vw, 1200px);
 }
 
-@media screen and (max-width:650px) {
-  .view {
-    width: 100%;
-  }
-}
+// @media screen and (max-width:650px) {
+//   .view {
+//     width: 100%;
+//   }
+// }

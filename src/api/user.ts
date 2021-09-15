@@ -24,7 +24,7 @@ export const GetRandomAvatar = (gender: string | undefined) => {
 export const ValidateUserExist = (validate: {}) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { data } = await axios.post('/api/user/validate', validate)
+      const { data } = await axios.post('/api/User/validate', validate)
       data.code && data.count ? resolve(true) : resolve(false)
     } catch (err) {
       reject(err)
@@ -37,7 +37,7 @@ export const UserLogin = (
 ): Promise<{ code: Number; token: String; msg: String; warn: String }> => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { data } = await axios.post('/api/user/login', { ...userinfo })
+      const { data } = await axios.post('/api/User/login', { ...userinfo })
       resolve(data)
     } catch (err) {
       reject(err)
@@ -48,7 +48,7 @@ export const UserLogin = (
 export const UserAuthentication = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { data } = await axios.post('/api/user/auth')
+      const { data } = await axios.post('/api/User/auth')
       resolve(data)
     } catch (err) {
       reject(err)
@@ -59,7 +59,7 @@ export const UserAuthentication = () => {
 export const UserLogout = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { data } = await axios.post('/api/user/logout')
+      const { data } = await axios.post('/api/User/logout')
       resolve(data)
     } catch (err) {
       reject(err)

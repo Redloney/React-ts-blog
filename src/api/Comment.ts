@@ -10,9 +10,8 @@ export const GetComments = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-
       // 获取用户点赞列表
-      const { user_like_groups } = await UserLikeGroup() as any
+      // const { user_like_groups } = await UserLikeGroup() as any
 
       const { data } = await axios({
         method: 'GET',
@@ -20,23 +19,23 @@ export const GetComments = (
         params: { page, size, sorter, ...obj },
       })
 
-      let comments: Array<any> = []
+      // let comments: Array<any> = data
 
-      if (user_like_groups[0]) {
-        for (const comm of data.comments) {
-          for (const like of user_like_groups) {
-            if (comm._id == like._id.target_id) {
-              comments.push({
-                ...comm,
-                like_number: like.likeTotal
-              })
-            }
-          }
-        }
-        resolve({ ...data, comments })
-        return
-      }
-      resolve(data || {})
+      // if (user_like_groups[0]) {
+      //   for (const comm of data.comments) {
+      //     for (const like of user_like_groups) {
+      //       if (comm._id == like._id.target_id) {
+      //         comments.push({
+      //           ...comm,
+      //           like_number: like.likeTotal
+      //         })
+      //       }
+      //     }
+      //   }
+      //   resolve({ ...data, comments })
+      //   return
+      // }
+      resolve(data || [])
     } catch (err) {
       reject([])
     }
@@ -44,7 +43,13 @@ export const GetComments = (
 }
 
 // 添加评论
-export const InsertComment = ({ content, replyId }: { content: string, replyId: string }) => {
+export const InsertComment = ({
+  content,
+  replyId,
+}: {
+  content: string
+  replyId: string
+}) => {
   return new Promise(async (resolve, _reject) => {
     try {
       const { data } = await axios({

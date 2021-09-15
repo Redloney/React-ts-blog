@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { Link } from 'react-router-dom'
+import { NavLink, useRouteMatch } from 'react-router-dom'
 
 import './index.scss'
 
+interface State {}
 interface Props {
   active: number
   links: Array<linkTypes>
@@ -14,19 +15,51 @@ interface linkTypes {
   path: string
 }
 
-const Navbar = (Props: Props) => {
-  const { links } = Props
-  return (
-    <nav className="nav">
-      {links.map(({ title, path }, index) => {
-        return (
-          <Link key={index} className="nav-link" to={path}>
-            {title}
-          </Link>
-        )
-      })}
-    </nav>
-  )
+export default class NavBar extends React.Component<Props, State> {
+  render() {
+    const { links } = this.props
+    return (
+      <nav className="nav">
+        {links.map(({ title, path }, index) => {
+          return (
+            <NavLink
+              key={index}
+              className="nav-link"
+              activeClassName="active"
+              to={path}
+            >
+              {title}
+            </NavLink>
+          )
+        })}
+      </nav>
+    )
+  }
 }
 
-export default Navbar
+// const Navbar = (Props: Props) => {
+//   const { links } = Props
+//   const match = useRouteMatch()
+//   console.log(match)
+//   useEffect(() => {
+//     console.log(match)
+//   }, [])
+//   return (
+//     <nav className="nav">
+//       {links.map(({ title, path }, index) => {
+//         return (
+//           <NavLink
+//             key={index}
+//             className="nav-link"
+//             activeClassName="active"
+//             to={path}
+//           >
+//             {title}
+//           </NavLink>
+//         )
+//       })}
+//     </nav>
+//   )
+// }
+
+// export default Navbar

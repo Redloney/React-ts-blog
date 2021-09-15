@@ -68,6 +68,7 @@ export default class Comments extends PureComponent<Props, State> {
   getMore = async () => {
     this.changeLodingStatus(true)
     this.changeLodingStatus(await this.props.getMore())
+    this.changeLodingStatus(false)
   }
 
   render() {
@@ -107,7 +108,7 @@ export default class Comments extends PureComponent<Props, State> {
         </Popconfirm>
       )
 
-      // 如果登录用户 === 当前评论用户 则开发删除功能
+      // 如果登录用户 === 当前评论用户 则开启删除功能
       Comm.userinfo._id === _id ? extra.push(del) : null
 
       return extra
@@ -125,7 +126,7 @@ export default class Comments extends PureComponent<Props, State> {
           textAlign: 'center',
         }}
       >
-        <Button type="text" onClick={getMore} loading={getMoreLoading}>
+        <Button onClick={getMore} loading={getMoreLoading}>
           更多留言
         </Button>
       </div>
