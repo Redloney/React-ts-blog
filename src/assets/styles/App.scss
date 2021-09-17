@@ -1,16 +1,32 @@
-// @import url('./font/font.scss');
-
 @font-face {
   font-family: Marydale;
-  src: url('./font/Marydale.ttf');
+  font-weight: 400;
+  font-display: auto;
+  src: url('../font/Marydale.ttf');
 }
 
 @font-face {
   font-family: SentyTEA;
-  src: url('./font/SentyTEA.ttf');
+  font-weight: 400;
+  font-display: auto;
+  src: url('https://cdn.jsdelivr.net/gh/Redloney/CDN@1.0/static/SentyTEA.ttf');
 }
 
-@import url('./reset.scss');
+@font-face {
+  font-family: 'oppo';
+  font-weight: 400;
+  font-display: auto;
+  src: url('https://cdn.jsdelivr.net/gh/zetheme/zetheme/fonts/opposans400.ttf')format("truetype");
+}
+
+@font-face {
+  font-family: 'oppo';
+  font-weight: 500;
+  font-display: auto;
+  src: url('https://cdn.jsdelivr.net/gh/zetheme/zetheme/fonts/opposans500.ttf')format("truetype");
+}
+
+@import url("https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css");
 
 .App {
   width: 100%;
@@ -24,19 +40,22 @@
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+
 body {
+  width: 100vw !important;
+
   &::-webkit-scrollbar {
     /*滚动条整体样式*/
-    width: 10px;
+    width: 8px;
     /*高宽分别对应横竖滚动条的尺寸*/
     height: 1px;
-    background-color: transparent;
+    background: transparent;
   }
 
   &::-webkit-scrollbar-thumb {
     /*滚动条里面小方块*/
-    border-radius: 10px;
-    background-color: skyblue;
+    background-color: #4CA1AF;
+    border-radius: 5px;
     background-image: -webkit-linear-gradient(45deg,
         rgba(255, 255, 255, 0.2) 25%,
         transparent 25%,
@@ -47,10 +66,9 @@ body {
         transparent);
   }
 
+
   &::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: #ededed;
+    background: transparent !important;
   }
 }
 
@@ -66,7 +84,6 @@ body {
     background-color: #333;
     display: none;
   }
-
 
   li {
     font-size: 18px;

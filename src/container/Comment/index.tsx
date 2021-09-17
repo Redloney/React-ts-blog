@@ -68,9 +68,10 @@ class Comment extends PureComponent<Props, State> {
           // 存 Redux
           this.props.login(userinfo)
           storage.set('userinfo', userinfo)
-          message.success('欢迎你! ' + userinfo.nickname, 3)
+          // message.success('欢迎你! ' + userinfo.nickname, 3)
         } else {
           UserLogout()
+          this.logout()
           storage.del('userinfo')
           storage.del('token')
           message.success('登录过期，请重新登录! ', 3)

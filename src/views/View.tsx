@@ -20,7 +20,7 @@ const View = () => {
                 path={path}
                 exact={exact}
                 component={component}
-              />
+              ></Route>
             )
           })}
         </Switch>

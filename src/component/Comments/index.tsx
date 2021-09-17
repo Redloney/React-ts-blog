@@ -214,7 +214,7 @@ export default class Comments extends PureComponent<Props, State> {
       <List.Item
         key={1}
         data-aos="fade-up"
-        data-aos-delay={1 * 10}
+        data-aos-delay={10 * 10}
         data-aos-duration={850}
       >
         <Skeleton avatar title active />
@@ -222,7 +222,7 @@ export default class Comments extends PureComponent<Props, State> {
       <List.Item
         key={2}
         data-aos="fade-up"
-        data-aos-delay={2 * 10}
+        data-aos-delay={20 * 10}
         data-aos-duration={850}
       >
         <Skeleton avatar title active />
@@ -230,26 +230,27 @@ export default class Comments extends PureComponent<Props, State> {
       <List.Item
         key={3}
         data-aos="fade-up"
-        data-aos-delay={3 * 10}
+        data-aos-delay={30 * 10}
         data-aos-duration={850}
       >
         <Skeleton avatar title active />
       </List.Item>,
     ]
 
-    const CommentLists = comments ? (
-      <List
-        className="comment-list"
-        itemLayout="horizontal"
-        size="small"
-        split
-        loadMore={loadMore}
-        dataSource={comments}
-        renderItem={mapComments}
-      />
-    ) : (
-      none
-    )
+    const CommentLists =
+      comments.length > 0 ? (
+        <List
+          className="comment-list"
+          itemLayout="horizontal"
+          size="small"
+          split
+          loadMore={loadMore}
+          dataSource={comments}
+          renderItem={mapComments}
+        />
+      ) : (
+        none
+      )
 
     return (
       <section

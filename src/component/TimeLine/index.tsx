@@ -6,19 +6,29 @@ import { Image, Tooltip } from 'antd'
 
 import './index.scss'
 import { Link } from 'react-router-dom'
+import dayjs from 'dayjs'
+interface Props {
+  arts: Array<any>
+}
 
-export default () => {
+export default (props: Props) => {
   const ItemRender = (items: Array<any>) => {
     return items.map((item: any, index: number) => {
+      item.updatedAt = dayjs(item.updatedAt).format('YYYY年MM月DD日')
       return (
-        <div key={item._id} className={`timeline-item`}>
+        <div
+          key={item._id}
+          className={`timeline-item`}
+          data-aos="zoom-in"
+          data-aos-easing="ease-in-out"
+        >
           <div className="line"></div>
           <div className="timeline-dot"></div>
           <div className="timeline-date">2021</div>
           <div
             className="timeline-content"
             data-aos="fade-up"
-            data-aos-duration={850 + index * 30}
+            data-aos-duration={1150 + index * 50}
             data-aos-easing="ease-in-out-back"
           >
             <div className="cover">
@@ -31,52 +41,33 @@ export default () => {
             </div>
             <div className="context">
               <div className="art-info">
-                <span className="tag">{item.tag}</span>
-                <span className="author">{item.author}</span>
-              </div>
-              <Link to={`/detail/${item._id}`} className="subtitle">
-                {item.title}
-              </Link>
-              <Tooltip
-                color="#2db7f590"
-                arrowPointAtCenter={true}
-                overlay={item.desc}
-              >
-                <a
-                  className="desc"
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <span className="tag">{item.classify.labal}</span>
+                {/* <span className="author">{item.author}</span> */}
+                <Link to={`/detail/${item._id}`} className="subtitle">
+                  {item.title}
+                </Link>
+                <span className="desc" title={item.desc}>
                   {item.desc}
-                </a>
-              </Tooltip>
+                </span>
+                <div className="extra">
+                  <span className="date">{item.updatedAt}</span>
+                  <span className="view">0 阅读</span>
+                  <span className="comm">0 评论</span>
+                </div>
+              </div>
             </div>
-            <span className="date">{item.updatedAt}</span>
-            <span className="more">查看更多</span>
           </div>
         </div>
       )
     })
   }
 
-  const obj = [
-    {
-      _id: '654a6asfas654f6a',
-      tag: '随笔',
-      author: '季筱筱',
-      cover:
-        'https://pica.zhimg.com/80/v2-5f28f704757a7b2fbc5b9700209a593e_720w.jpg?source=1940ef5c',
-      title: '一篇日记（一）',
-      desc: '很久没写日记了，平时也没什么时间整理一下自己的思绪，趁着放假写一篇日记，记录一下自己的趣事~',
-      updatedAt: '2021.9.15',
-      createdAt: '2021.9.15',
-    },
-  ]
-
   return (
     <>
-      <div className="timeline">{ItemRender(obj)}</div>
+      <div className="timeline">
+        {ItemRender(props.arts)}
+        {ItemRender(props.arts)}
+      </div>
     </>
   )
 }

@@ -9,7 +9,7 @@ const NoMatch = lazy(() => import('../container/NoMatch'))
 const routers = [
   {
     path: '/',
-    component: Comment,
+    component: Blog,
     exact: true,
   },
   {

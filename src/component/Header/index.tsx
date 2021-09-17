@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react'
+import React from 'react'
 
 import './index.scss'
 
@@ -30,9 +30,7 @@ const Header = () => {
     <header className="header">
       <div className="wrapper">
         <div className="avatar">
-          <Link to="/">
-            <Avatar src={avatar} size={120} />
-          </Link>
+          <Avatar src={avatar} size={120} />
         </div>
         <div className="nickname font">
           <Link to="/">

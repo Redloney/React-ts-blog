@@ -5,9 +5,7 @@ import './Cv.scss'
 import { Row, Col } from 'antd'
 
 const Cv = () => {
-  useEffect(() => {
-    console.log('Cv OnMounted')
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <main className="cv" data-aos="fade-up" data-aos-duration="850">

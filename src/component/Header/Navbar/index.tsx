@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
-import { NavLink, useRouteMatch } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import './index.scss'
 

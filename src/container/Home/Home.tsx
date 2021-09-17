@@ -3,9 +3,7 @@ import './Home.scss'
 export interface Props {}
 
 const Home = (props: Props) => {
-  useEffect(() => {
-    console.log(props)
-  }, [])
+  useEffect(() => {}, [])
 
   return <div className="Home"></div>
 }

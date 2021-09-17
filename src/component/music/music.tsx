@@ -13,15 +13,16 @@ export default class Music extends PureComponent {
   }
 
   play = () => {
-    if (this.state.isPlay) {
+    const isPlay = this.audio.current?.paused
+    if (!isPlay) {
       this.audio.current?.pause()
       this.setState({
-        isPlay: !this.state.isPlay,
+        isPlay: isPlay,
       })
     } else {
       this.audio.current?.play()
       this.setState({
-        isPlay: !this.state.isPlay,
+        isPlay: isPlay,
       })
     }
   }

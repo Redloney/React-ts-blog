@@ -17,14 +17,26 @@ const Blog = () => {
   }
 
   useEffect(() => {
-    // syncArtList()
+    syncArtList()
   }, [])
 
-  const none = [<Skeleton active />, <Skeleton active />, <Skeleton active />]
+  const none = (
+    <div className="skeleton">
+      <div data-aos="fade-up" data-aos-duration="850">
+        <Skeleton avatar active />
+      </div>
+      <div data-aos="fade-up" data-aos-duration="850" data-aos-delay="100">
+        <Skeleton avatar active />
+      </div>
+      <div data-aos="fade-up" data-aos-duration="850" data-aos-delay="200">
+        <Skeleton avatar active />
+      </div>
+    </div>
+  )
 
   return (
     <div className="blog">
-      <TimeLine />
+      {artList.length > 0 ? <TimeLine arts={artList} /> : none}
     </div>
   )
 }

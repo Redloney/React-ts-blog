@@ -292,6 +292,11 @@
     "@types/react" "*"
     hoist-non-react-statics "^3.3.0"
 
+"@types/js-md5@^0.4.2":
+  version "0.4.3"
+  resolved "https://registry.nlark.com/@types/js-md5/download/@types/js-md5-0.4.3.tgz?cache=0&sync_timestamp=1629708102475&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fjs-md5%2Fdownload%2F%40types%2Fjs-md5-0.4.3.tgz#c134cbb71c75018876181f886a12a2f9962a312a"
+  integrity sha1-wTTLtxx1AYh2GB+IahKi+ZYqMSo=
+
 "@types/lodash@^4.14.172":
   version "4.14.172"
   resolved "https://registry.nlark.com/@types/lodash/download/@types/lodash-4.14.172.tgz#aad774c28e7bfd7a67de25408e03ee5a8c3d028a"
@@ -883,6 +888,11 @@ isarray@0.0.1:
   version "0.0.1"
   resolved "https://registry.nlark.com/isarray/download/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
   integrity sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=
+
+js-md5@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.nlark.com/js-md5/download/js-md5-0.7.3.tgz#b4f2fbb0b327455f598d6727e38ec272cd09c3f2"
+  integrity sha1-tPL7sLMnRV9ZjWcn447Ccs0Jw/I=
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -1486,6 +1496,15 @@ react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-
   version "16.13.1"
   resolved "https://registry.nlark.com/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
+
+react-keep-alive@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.nlark.com/react-keep-alive/download/react-keep-alive-2.5.2.tgz#c0b8118f3dd6743323d1662b8368e6ebd649e81a"
+  integrity sha1-wLgRjz3WdDMj0WYrg2jm69ZJ6Bo=
+  dependencies:
+    "@types/js-md5" "^0.4.2"
+    hoist-non-react-statics "^3.3.0"
+    js-md5 "^0.7.3"
 
 react-redux@^7.2.4:
   version "7.2.4"
