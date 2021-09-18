@@ -6,7 +6,7 @@ interface Props {}
 
 interface State {}
 
-import { getArtDetail } from '../../../api/Article'
+import { getArtDetail, viewArt } from '../../../api/Article'
 import dayjs from 'dayjs'
 
 // import art from './data.json'
@@ -19,11 +19,12 @@ export default class Detail extends PureComponent<Props, State> {
   componentDidMount() {
     let id = (this.props as any).match.params.id
     getArtDetail(id).then((art) => {
-      art.createdTime = dayjs(art.createdAt).format('YYYY-MM-DD HH:mm')
+      art.updatedTime = dayjs(art.updatedAt).format('YYYY年MM月DD日')
       this.setState({
         art: { ...art },
       })
     })
+    viewArt(id)
   }
 
   render() {
@@ -36,11 +37,24 @@ export default class Detail extends PureComponent<Props, State> {
           </div>
           <div className="postz_pic">
             <div className="postz_pic_basic">
-              <h1 className="postz_name">{art.title}</h1>
-              <div className="postz_pic_info">
-                <span>{/* <a href="#">{art.classify.labal}</a> */}</span>
+              <h1
+                className="postz_name"
+                data-aos="fade-up"
+                data-aos-duration="850"
+              >
+                {art.title}
+              </h1>
+              <div
+                className="postz_pic_info"
+                data-aos="fade-up"
+                data-aos-duration="850"
+                data-aos-delay="100"
+              >
+                <span>
+                  <a href="#">{art.author}</a>
+                </span>
                 <i className="text-primary">•</i>
-                <time dateTime={art.createdTime}>{art.createdAt}</time>
+                <time dateTime={art.updatedTime}>{art.updatedTime}</time>
                 <i className="iconfont iconxiegang"></i>
               </div>
             </div>

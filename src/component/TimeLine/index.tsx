@@ -51,7 +51,7 @@ export default (props: Props) => {
                 </span>
                 <div className="extra">
                   <span className="date">{item.updatedAt}</span>
-                  <span className="view">0 阅读</span>
+                  <span className="view">{item.watchNum} 阅读</span>
                   <span className="comm">0 评论</span>
                 </div>
               </div>
@@ -64,10 +64,7 @@ export default (props: Props) => {
 
   return (
     <>
-      <div className="timeline">
-        {ItemRender(props.arts)}
-        {ItemRender(props.arts)}
-      </div>
+      <div className="timeline">{ItemRender(props.arts)}</div>
     </>
   )
 }

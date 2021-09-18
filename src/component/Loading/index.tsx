@@ -11,14 +11,7 @@ const Loading = () => {
     size: 'large',
   }
 
-  return (
-    // <div
-    //   style={{ backgroundColor: '#eee', textAlign: 'center', padding: '100px' }}
-    // >
-    //   loading
-    // </div>
-    <Spin {...SpinProps}></Spin>
-  )
+  return <Spin {...SpinProps}></Spin>
 }
 
 export default Loading

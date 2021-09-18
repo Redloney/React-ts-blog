@@ -22,6 +22,19 @@ export const getArtDetail = async (_id: string) => {
   return {}
 }
 
+// 文章详情
+export const viewArt = async (_id: string) => {
+  const { data } = (await axios({
+    method: 'POST',
+    url: '/api/article/view',
+    data: { _id },
+  })) as any
+  if (data.code && data.art) {
+    return data.code
+  }
+  return {}
+}
+
 const list = [
   {
     _id: '605f32dafccc5d5c2169566e',

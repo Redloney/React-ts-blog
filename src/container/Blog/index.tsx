@@ -33,7 +33,6 @@ const Blog = () => {
       </div>
     </div>
   )
-
   return (
     <div className="blog">
       {artList.length > 0 ? <TimeLine arts={artList} /> : none}

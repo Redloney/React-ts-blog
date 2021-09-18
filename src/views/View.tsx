@@ -7,6 +7,7 @@ import routers from '../routers'
 import './view.scss'
 
 import MusicPlayer from '../component/music/music'
+import GoTop from '../component/GoTop'
 
 const View = () => {
   return (
@@ -26,6 +27,7 @@ const View = () => {
         </Switch>
       </Suspense>
       <MusicPlayer />
+      <GoTop />
     </div>
   )
 }
