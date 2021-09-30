@@ -17,8 +17,6 @@ import { UserInfo, Comment as IComment } from '../../types'
 import { TextAreaRef } from 'antd/lib/input/TextArea'
 import { InsertComment } from '../../api/Comment'
 
-import axios from '../../api/axios'
-
 // 参数接口
 interface Props {
   userinfo: UserInfo
@@ -88,7 +86,6 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   replyTo = (comm: IComment, _id: string, screenY: number) => {
-    // console.log(this)
     let nickname = comm.userinfo.nickname
     this.inputRef.current?.focus()
     this.setState({
@@ -114,12 +111,12 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   textAreaOnBlur = () => {
-    if (this.state.replyId) {
-      this.setState({
-        textarea: '',
-        replyId: '',
-      })
-    }
+    // if (this.state.replyId) {
+    //   this.setState({
+    //     textarea: '',
+    //     replyId: '',
+    //   })
+    // }
   }
 
   // 表情输入框显示
@@ -147,7 +144,7 @@ export default class Editor extends PureComponent<Props, State> {
     })
   }
 
-  changeLeaveMessageStatus = (leaveMessageStatus: boolean) => {
+  sending = (leaveMessageStatus: boolean) => {
     this.setState({
       leaveMessageStatus,
     })
@@ -155,25 +152,25 @@ export default class Editor extends PureComponent<Props, State> {
 
   //留言
   leaveMessage = async () => {
-    this.changeLeaveMessageStatus(true)
+    this.sending(true)
     const content = this.state.textarea
     const replyId = this.state.replyId
     if (this.props.userinfo.isLogin) {
       if (!content) {
         message.warn('留言不可以为空哦！', 3)
         this.inputRef.current?.focus()
-        this.changeLeaveMessageStatus(false)
+        this.sending(false)
         return
       }
       if (content.length < 5) {
         message.warning(' 提交失败、再多写一点吧', 3)
-        this.changeLeaveMessageStatus(false)
+        this.sending(false)
 
         return
       }
       if (content.length > 300) {
         message.warning('提交失败、留言字数超出限制')
-        this.changeLeaveMessageStatus(false)
+        this.sending(false)
 
         return
       }
@@ -187,11 +184,11 @@ export default class Editor extends PureComponent<Props, State> {
         this.setState({ textarea: '', replyId: '', commPosition: 0 })
         this.props.updateComments()
       }
-      this.changeLeaveMessageStatus(false)
+      this.sending(false)
       return
     }
     message.info('Hi 陌生人 请先登录哦！', 3)
-    this.changeLeaveMessageStatus(false)
+    this.sending(false)
   }
 
   render() {

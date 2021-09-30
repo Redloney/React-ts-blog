@@ -43,7 +43,6 @@ export default class AvatarUpload extends PureComponent<Props, State> {
 
   handleChange = (info: UploadChangeParam) => {
     let { file } = info
-    console.log(file.percent + '%')
     switch (file.status) {
       case 'uploading':
         break

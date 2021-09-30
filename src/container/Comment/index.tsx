@@ -127,7 +127,6 @@ class Comment extends PureComponent<Props, State> {
         avatar,
         address,
       })
-      message.info(msg, 3)
       // 判断是否登录成功！
       if (code && token) {
         // 存Token

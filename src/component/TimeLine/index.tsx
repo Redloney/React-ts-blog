@@ -1,8 +1,6 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 
-import { Image, Tooltip } from 'antd'
-
-// src="https://p4.qhimg.com/bdr/__100/t0169401bba7e837b9c.jpg"
+import { Image } from 'antd'
 
 import './index.scss'
 import { Link } from 'react-router-dom'
@@ -33,16 +31,18 @@ export default (props: Props) => {
           >
             <div className="cover">
               <Image
+                slot="error"
                 preview={false}
                 loading="lazy"
                 src={item.cover}
-                alt="cover"
               />
             </div>
             <div className="context">
               <div className="art-info">
-                <span className="tag">{item.classify.labal}</span>
-                {/* <span className="author">{item.author}</span> */}
+                {/* <span className="tag">
+                  <i className="iconfont iconbookmark"></i>
+                  {item.classify.label}
+                </span> */}
                 <Link to={`/detail/${item._id}`} className="subtitle">
                   {item.title}
                 </Link>

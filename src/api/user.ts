@@ -13,7 +13,6 @@ export const GetRandomAvatar = (gender: string | undefined) => {
           format: 'json',
         },
       })
-      console.log(data)
       data.code ? resolve(data) : resolve(null)
     } catch (err) {
       reject(err)

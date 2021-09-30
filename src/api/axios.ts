@@ -53,7 +53,7 @@ axios.interceptors.response.use(
 
         // 404请求不存在
         case 404:
-          message.warning('您访问的网页不存在。')
+          // message.warning('您访问的网页不存在。')
           break
         // 其他错误，直接抛出错误提示
         default:

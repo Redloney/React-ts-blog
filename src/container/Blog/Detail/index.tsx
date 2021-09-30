@@ -30,7 +30,7 @@ export default class Detail extends PureComponent<Props, State> {
   render() {
     const art: any = this.state.art
     return (
-      <article className="art-body">
+      <article className="art-body" data-aos="fade-up" data-aos-duration="850">
         <div className="art-head">
           <div className="cover">
             <img src={art.cover} alt="" />
@@ -65,12 +65,14 @@ export default class Detail extends PureComponent<Props, State> {
           dangerouslySetInnerHTML={{ __html: art.html }}
         ></div>
         <div className="art-foot">
-          <div className="post_tags">
+          <h2 className="end">The End</h2>
+
+          {/* <div className="post_tags">
             <a href="#">随笔</a>
             <a href="#">生活</a>
             <a href="#">喜欢</a>
             <a href="#">闲谈</a>
-          </div>
+          </div> */}
         </div>
       </article>
     )

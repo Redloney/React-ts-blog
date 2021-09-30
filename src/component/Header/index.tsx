@@ -37,7 +37,7 @@ const Header = () => {
             <h1>Redloney</h1>
           </Link>
         </div>
-        <div className="faithful">一面选择放弃,一面劝自己走到底！</div>
+        {/* <div className="faithful">一面选择放弃,一面劝自己走到底！</div> */}
         <Navbar links={links} active={0} />
       </div>
     </header>

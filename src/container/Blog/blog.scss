@@ -1,11 +1,13 @@
 .blog {
   margin: auto;
+  max-width: 800px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   color: #fff;
 
   .skeleton {
+    margin: 0 50px;
     display: flex;
     flex-direction: column;
     gap: 50px;

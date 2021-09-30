@@ -1,4 +1,9 @@
-import { GET_COMMENTS, GET_COMMENTS_TYPE, SET_COMMENT, SET_COMMENT_TYPE } from '../const'
+import {
+  GET_COMMENTS,
+  GET_COMMENTS_TYPE,
+  SET_COMMENT,
+  SET_COMMENT_TYPE,
+} from '../const'
 import { CLEAR_COMMENTS, CLEAR_COMMENTS_TYPE } from '../const'
 
 import { Comment } from '../../types'
@@ -16,10 +21,9 @@ export interface SetCommentsAction {
 }
 
 export interface ClaerCommentsAction {
-  type: CLEAR_COMMENTS_TYPE,
+  type: CLEAR_COMMENTS_TYPE
   payload: payload
 }
-
 
 export interface payload {
   page: number
@@ -29,19 +33,21 @@ export interface payload {
   comm_id?: string
 }
 
-
-export type CommentsActions = GetCommentsAction | SetCommentsAction | ClaerCommentsAction
+export type CommentsActions =
+  | GetCommentsAction
+  | SetCommentsAction
+  | ClaerCommentsAction
 
 // 获取留言列表
 export const getComments = (payload: payload) => ({
   type: GET_COMMENTS,
-  payload: payload
+  payload: payload,
 })
 
 // 设置留言
 export const setComment = (payload: payload) => ({
   type: SET_COMMENT,
-  payload: payload
+  payload: payload,
 })
 
 // // 获取留言列表
@@ -61,5 +67,5 @@ export const setComment = (payload: payload) => ({
 // 清除留言列表
 export const clearComments = (payload: payload): CommentsActions => ({
   type: CLEAR_COMMENTS,
-  payload
+  payload,
 })

@@ -4,6 +4,7 @@ import { Skeleton } from 'antd'
 import { getArtList } from '../../api/Article'
 import dayjs from 'dayjs'
 import TimeLine from '../../component/TimeLine'
+import { GetRandomAvatar } from '../../api/User'
 
 const Blog = () => {
   const [artList, setArtList] = useState([])
